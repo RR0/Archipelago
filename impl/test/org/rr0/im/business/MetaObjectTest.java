@@ -3,12 +3,11 @@ package org.rr0.im.business;
 import junit.framework.TestCase;
 import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorResources;
-import org.ufomatics.archipelago.model.*;
-import org.ufomatics.archipelago.control.MergerImpl;
-import org.ufomatics.archipelago.control.Merger;
-import org.ufomatics.archipelago.model.UserImpl;
 import org.rr0.database.archipelago.OVNIFranceDatabaseAdapter;
 import org.rr0.database.archipelago.RR0DatabaseAdapter;
+import org.ufomatics.archipelago.control.Merger;
+import org.ufomatics.archipelago.control.MergerImpl;
+import org.ufomatics.archipelago.model.*;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -18,25 +17,25 @@ import java.util.*;
 /**
  * A test for describing the Roswell case using the RR0 Information Model.
  *
- * @author Jérôme Beau
+ * @author JÃ©rÃ´me Beau
  * @version 21 avr. 2003 16:18:28
  */
 public class MetaObjectTest extends TestCase {
-    private DatabaseAdapter rr0Adapter = (DatabaseAdapter) new RR0DatabaseAdapter();
-    private DatabaseAdapter ovniFranceAdapter;
-    private MetaType sightingMetaType;
-    private static final String SIGHTING_CONTENT_1 = "Un témoin, scientifique a observé pendant une à 19 minutes un objet de forme ronde. Son diamètre apparant a été estimé à 15 minute d'arc sa couleur etait orangé, émettant une lumière plutôt fluorescente. L'objet était animé d'un mouvement de rotation. Il a parcouru sa trajectoire au zénit à une vitesse estimée de 1000 à 1500 km/h, pour une distance au témoin de 1 à 3 km. Il faisait des virages brusques.";
-    private static final String SIGHTING_CONTENT_2 = "Un scientifique observe pendant 19 mn un objet rond, de diamètre apparent estimé à 15 mn d'arc, de couleur orangée, émettant une lumière plutôt fluorescente. L'objet était animé d'un mouvement de rotation. Il a parcouru sa trajectoire au zénith à une vitesse estimée de 1000 à 1500 km/h, pour une distance au témoin de 1 à 3 km. Il faisait des virages brusques";
-    private Database ovniFranceDatabase;
-    private Database rr0Database;
-    private MetaDataSource dummyUser;
+  private DatabaseAdapter rr0Adapter = (DatabaseAdapter) new RR0DatabaseAdapter();
+  private DatabaseAdapter ovniFranceAdapter;
+  private MetaType sightingMetaType;
+  private static final String SIGHTING_CONTENT_1 = "Un tÃ©moin, scientifique a observÃ© pendant une Ã  19 minutes un objet de forme ronde. Son diamÃ¨tre apparant a Ã©tÃ© estimÃ© Ã  15 minute d'arc sa couleur etait orangÃ©, Ã©mettant une lumiÃ¨re plutÃ´t fluorescente. L'objet Ã©tait animÃ© d'un mouvement de rotation. Il a parcouru sa trajectoire au zÃ©nit Ã  une vitesse estimÃ©e de 1000 Ã  1500 km/h, pour une distance au tÃ©moin de 1 Ã  3 km. Il faisait des virages brusques.";
+  private static final String SIGHTING_CONTENT_2 = "Un scientifique observe pendant 19 mn un objet rond, de diamÃ¨tre apparent estimÃ© Ã  15 mn d'arc, de couleur orangÃ©e, Ã©mettant une lumiÃ¨re plutÃ´t fluorescente. L'objet Ã©tait animÃ© d'un mouvement de rotation. Il a parcouru sa trajectoire au zÃ©nith Ã  une vitesse estimÃ©e de 1000 Ã  1500 km/h, pour une distance au tÃ©moin de 1 Ã  3 km. Il faisait des virages brusques";
+  private Database ovniFranceDatabase;
+  private Database rr0Database;
+  private MetaDataSource dummyUser;
 
-    public MetaObjectTest(final String someTestName) {
-        super(someTestName);
-    }
+  public MetaObjectTest(final String someTestName) {
+    super(someTestName);
+  }
 
-    protected void setUp() throws IOException, SAXException, MetaException {
-        Properties ovniFranceProperties = new Properties();
+  protected void setUp() throws IOException, SAXException, MetaException {
+    Properties ovniFranceProperties = new Properties();
         ovniFranceProperties.setProperty("archipelago:ovnifrance:url", "http://baseovnifrance.free.fr");
         ovniFranceAdapter = new OVNIFranceDatabaseAdapter();
         ovniFranceAdapter.setProperties(ovniFranceProperties);
@@ -115,7 +114,7 @@ public class MetaObjectTest extends TestCase {
             sighting.set("moment", moment.getTime(), dummyUser);
             sighting.accept(rr0Adapter);
             String content = (String) sighting.get("content");
-            assertEquals("A Inavale, à environ 60 km au Sud de Hastings, une douzaine de personnes qui reviennent de l'église sont survolées par un aéronef mystérieux de forme conique, d'une longueur évaluée à 10 m environ. 2 paires d'ailes dépassent des flancs de l'engin qui se termine par un gouvernail. Un projecteur est fixé à sa proue et on distingue 6 lumières plus petites. D'après les témoins, on peut entendre comme des voix et des rires venant du ciel.", content);
+          assertEquals("A Inavale, Ã  environ 60 km au Sud de Hastings, une douzaine de personnes qui reviennent de l'Ã©glise sont survolÃ©es par un aÃ©ronef mystÃ©rieux de forme conique, d'une longueur Ã©valuÃ©e Ã  10 m environ. 2 paires d'ailes dÃ©passent des flancs de l'engin qui se termine par un gouvernail. Un projecteur est fixÃ© Ã  sa proue et on distingue 6 lumiÃ¨res plus petites. D'aprÃ¨s les tÃ©moins, on peut entendre comme des voix et des rires venant du ciel.", content);
         }
 
         // Change database
@@ -143,7 +142,7 @@ public class MetaObjectTest extends TestCase {
             sighting.set("moment", moment.getTime(), dummyUser);
             sighting.accept(rr0Adapter);
             String content = (String) sighting.get("content");
-            assertEquals("A Las Vegas (Nevada), un objet rond orange descend par 2 fois au faîte des arbres.", content);
+          assertEquals("A Las Vegas (Nevada), un objet rond orange descend par 2 fois au faÃ®te des arbres.", content);
             MetaObject source = (MetaObject) sighting.get("source");
             assertEquals("Hynek, 1979", source.get("title"));
         }
@@ -159,7 +158,7 @@ public class MetaObjectTest extends TestCase {
             sighting.set("moment", moment.getTime(), dummyUser);
             sighting.accept(rr0Adapter);
             String content = (String) sighting.get("content");
-            assertEquals("Observation d'un \"navire\" planant et jettant des \"sondes\" sur Newton (Iowa). En plusieurs endroits, cette chose merveilleuse fut observée par plusieurs personnes équipées de petites télescopes ou de jumelles (...). D'après ces personnes, le corps principal de l'objet volant nocturne doit avoir 20 m de longueur, il est de proportions agréable et semble être construit très fragilement. A ce corps est attaché un projecteur et d'autres lumières. Quelques observateurs affirment avoir vu, à peu de distance au-dessus de ce corps principal, comme des structures latérales ressemblant à des ailes ou à des voiles. Ces dernières devaient avoir 6 m de largeur [Chicago Chronicle].", content);
+          assertEquals("Observation d'un \"navire\" planant et jettant des \"sondes\" sur Newton (Iowa). En plusieurs endroits, cette chose merveilleuse fut observÃ©e par plusieurs personnes Ã©quipÃ©es de petites tÃ©lescopes ou de jumelles (...). D'aprÃ¨s ces personnes, le corps principal de l'objet volant nocturne doit avoir 20 m de longueur, il est de proportions agrÃ©able et semble Ãªtre construit trÃ¨s fragilement. A ce corps est attachÃ© un projecteur et d'autres lumiÃ¨res. Quelques observateurs affirment avoir vu, Ã  peu de distance au-dessus de ce corps principal, comme des structures latÃ©rales ressemblant Ã  des ailes ou Ã  des voiles. Ces derniÃ¨res devaient avoir 6 m de largeur [Chicago Chronicle].", content);
         }
     }
 }
