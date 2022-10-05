@@ -1,0 +1,19 @@
+import {Article} from "database/rr0/model/Article"
+import {Source} from "database/rr0/model/Source"
+import {Locale} from "archipelago/api/util/jsdk/Locale"
+
+export class ArticleImpl implements Article {
+
+  protected text = new Map<Locale, string>()
+
+  constructor(protected author?: Source) {
+  }
+
+  getText(locale: Locale): string | undefined {
+    return this.text.get(locale)
+  }
+
+  setText(text: string, locale: Locale): void {
+    this.text.set(locale, text)
+  }
+}

@@ -8,6 +8,9 @@ import {FRANCE, FRENCH, Locale} from "archipelago/api/util/jsdk/Locale"
 import {Calendar} from "archipelago/api/util/jsdk/util/Calendar"
 import {GregorianCalendar} from "archipelago/api/util/jsdk/util/GregorianCalendar"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
+import {ArticleImpl} from "database/rr0/model/ArticleImpl"
+import {Source} from "database/rr0/model/Source"
+import {Article} from "database/rr0/model/Article"
 
 export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
   private static readonly DEFAULT_URL = "http://rr0.org"
@@ -142,32 +145,28 @@ export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
     const parent = descnode.getParent()
     if (parent instanceof Span) {
       const attribute = (parent as Span).getAttribute("class")
-      if ("source".equals(attribute)) {
+      if ("source" === attribute) {
         const sourceValue = sighting.get("source") as Source
         if (null == sourceValue) {
-          let text = ""
-          const sourceValue = new ArticleImpl(text.toString(), null as Actor)
+          const sourceValue = new ArticleImpl("")
           sighting.set("source", sourceValue, this)
         } else {
-          const sourcetxt = (sourceValue as Article).getText(Locale.getDefault())
-          sourcetxt = sourcetxt + descnode.getText();
+          let sourcetxt = (sourceValue as Article).getText(Locale.getDefault())
+          sourcetxt += descnode.getText();
           (sourceValue as Article).setText(sourcetxt, Locale.getDefault())
         }
       }
     } else if (descnode instanceof AbstractNodeDecorator) {
-      text.append(descnode.getText())
+      text += descnode.getText()
     }
-
     const children = descnode.getChildren()
     if (null != children) {
       const simpleNodeIterator = children.elements()
-
       while (simpleNodeIterator.hasMoreNodes()) {
         const node = simpleNodeIterator.nextNode()
         this.append(node, text, sighting)
       }
     }
-
   }
 
   close(): void {
