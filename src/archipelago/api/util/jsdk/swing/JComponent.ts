@@ -12,10 +12,6 @@ export class JComponent {
   constructor(public contents?: any) {
   }
 
-  getFont(): Font {
-    return this.font
-  }
-
   setEnabled(b: boolean) {
     this.enabled = b
   }
@@ -44,5 +40,13 @@ export class JComponent {
 
   getBackground(): Color {
     return this.background
+  }
+
+  getFont(): Font {
+    return this.font
+  }
+
+  setFont(font: Font) {
+    this.font = font
   }
 }

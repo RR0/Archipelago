@@ -1,35 +1,35 @@
+import {AbstractPane} from "archipelago/impl/view/ui/AbstractPane"
+import {SpringLayout, SpringLayoutDirection} from "archipelago/api/util/jsdk/swing/SpringLayout"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
-import {MetaFunction} from "archipelago/api/model/MetaFunction"
+import {MetaField} from "archipelago/api/model/MetaField"
+import {JLabel} from "archipelago/api/util/jsdk/swing/JLabel"
+import {JTextField} from "archipelago/api/util/jsdk/swing/JTextField"
 import {MetaType} from "archipelago/api/model/MetaType"
 import {JComboBox} from "archipelago/api/util/jsdk/swing/JComboBox"
-import {JTextField} from "archipelago/api/util/jsdk/swing/JTextField"
-import {JLabel} from "archipelago/api/util/jsdk/swing/JLabel"
-import {SpringLayout, SpringLayoutDirection} from "archipelago/api/util/jsdk/swing/SpringLayout"
-import {AbstractPane} from "archipelago/impl/src/ufomatics/archipelago/view/swing/AbstractPane"
 
-export class FunctionPane extends AbstractPane {
+export class FieldPane extends AbstractPane {
 
   private readonly nameTextfield: JTextField
   private readonly typeCombo: JComboBox
 
-  //private descriptionTextarea: JTextArea
+  /*private descriptionTextarea: JTextArea
+  private newTypeButton: JButton*/
 
   constructor(
     protected controller: UFOPlatformController,
     /**
      * The data. Will be modified if ok, or not if cancelled
      */
-    protected data: MetaFunction
-  ) {
+    protected data: MetaField) {
     super()
     const layout = new SpringLayout()
     this.setLayout(layout)
 
     const nameLabel = new JLabel("Name")
-    this.nameTextfield = new JTextField(data.getName())
-    const typeLabel = new JLabel("Return type")
+    this.nameTextfield = new JTextField(this.data.getName())
+    const typeLabel = new JLabel("Type")
     this.typeCombo = this.createTypeCombo(controller)
-    const selectedType = data.getReturnType() == null ? controller.getDefaultFieldType() : data.getReturnType()
+    const selectedType = this.data.getType() == null ? controller.getDefaultFieldType() : this.data.getType()
     this.typeCombo.setSelectedItem(selectedType)
     this.add(nameLabel)
     this.add(this.nameTextfield)
@@ -54,6 +54,6 @@ export class FunctionPane extends AbstractPane {
 
   ok(): void {
     this.data.setName(this.nameTextfield.getText())
-    this.data.setReturnType(this.typeCombo.getSelectedItem() as MetaType)
+    this.data.setType(this.typeCombo.getSelectedItem() as MetaType)
   }
 }

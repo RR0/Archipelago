@@ -1,5 +1,12 @@
 import {Dimension} from "archipelago/api/util/jsdk/swing/Dimension"
 
+export class JWindowEvent {
+  static WINDOW_CLOSING = 0
+
+  getID(): string {
+  }
+}
+
 export class JWindow {
 
   private enabled = true

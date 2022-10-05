@@ -4,6 +4,7 @@ import {DatabaseAdapter} from "archipelago/api/model/DatabaseAdapter"
 import {Localizer} from "archipelago/api/util/Localizer"
 import {MetaType} from "archipelago/api/model/MetaType"
 import {HashSet} from "archipelago/api/util/jsdk/util/HashSet"
+import {JSet} from "archipelago/api/util/jsdk/util/JSet"
 
 /**
  *
@@ -34,5 +35,5 @@ export interface UFOPlatformController {
 
   createDatasource(): Database
 
-  getRecentFiles(): HashSet<String>
+  getRecentFiles(): JSet<String>
 }

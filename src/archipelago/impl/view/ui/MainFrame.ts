@@ -14,18 +14,18 @@ import {JPopupMenu} from "archipelago/api/util/jsdk/swing/JPopupMenu"
 import {JMenuItem} from "archipelago/api/util/jsdk/swing/JMenuItem"
 import {JSeparator} from "archipelago/api/util/jsdk/swing/JSeparator"
 import {MouseAdapter} from "archipelago/api/util/jsdk/swing/MouseAdapter"
-import {TypePane} from "archipelago/impl/src/ufomatics/archipelago/view/swing/TypePane"
-import {FieldPane} from "archipelago/impl/src/ufomatics/archipelago/view/swing/FieldPane"
+import {TypePane} from "archipelago/impl/view/ui/TypePane"
+import {FieldPane} from "archipelago/impl/view/ui/FieldPane"
 import {BorderLayout} from "archipelago/api/util/jsdk/swing/BorderLayout"
 import {JComponent} from "archipelago/api/util/jsdk/swing/JComponent"
 import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
 import {MetaModel} from "archipelago/api/model/MetaModel"
 import {JMenu} from "archipelago/api/util/jsdk/swing/JMenu"
 import {JButton} from "archipelago/api/util/jsdk/swing/JButton"
-import {DatasourcePane} from "archipelago/impl/src/ufomatics/archipelago/view/swing/DatasourcePane"
+import {DatasourcePane} from "archipelago/impl/view/ui/DatasourcePane"
 import {JTree} from "archipelago/api/util/jsdk/swing/JTree"
-import {PreferencesDialog} from "archipelago/impl/src/ufomatics/archipelago/view/swing/PreferencesDialog"
-import {FunctionPane} from "archipelago/impl/src/ufomatics/archipelago/view/swing/FunctionPane"
+import {PreferencesDialog} from "archipelago/impl/view/ui/PreferencesDialog"
+import {FunctionPane} from "archipelago/impl/view/ui/FunctionPane"
 import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
 import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
 import {DefaultTreeModel} from "archipelago/api/util/jsdk/swing/DefaultTreeModel"
@@ -43,6 +43,7 @@ import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/DefaultTr
 import {JFile} from "archipelago/api/util/jsdk/util/JFile"
 import {Color} from "archipelago/api/util/jsdk/swing/Color"
 import {Dimension} from "archipelago/api/util/jsdk/swing/Dimension"
+import {JWindowEvent} from "archipelago/api/util/jsdk/swing/JWindow"
 
 class AboutAction extends AbstractAction {
 
@@ -340,7 +341,7 @@ export class MainFrame extends JFrame {
     const self = this
     const renderer = new class extends DefaultTreeCellRenderer {
       getTreeCellRendererComponent(tree: JTree, value: any, sel: boolean, expanded: boolean, leaf: boolean, row: number, hasFocus: boolean): JComponent {
-        const comp = self.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus)
+        const comp = this.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus)
         const userObject = (value as DefaultMutableTreeNode).getUserObject()
         if (userObject instanceof MetaTypeImpl) {
           comp.setFont(typeFont)

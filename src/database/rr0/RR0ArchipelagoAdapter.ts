@@ -4,18 +4,19 @@ import {AbstractDatabaseAdapter} from "archipelago/api/model/AbstractDatabaseAda
 import {MetaTypeImpl} from "archipelago/api/model/MetaTypeImpl"
 import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaException} from "archipelago/api/model/MetaException"
-import {FRANCE, FRENCH} from "archipelago/api/util/jsdk/Locale"
+import {FRANCE, FRENCH, Locale} from "archipelago/api/util/jsdk/Locale"
 import {Calendar} from "archipelago/api/util/jsdk/util/Calendar"
 import {GregorianCalendar} from "archipelago/api/util/jsdk/util/GregorianCalendar"
+import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
 
-export class RR0DatabaseAdapter extends AbstractDatabaseAdapter {
+export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
   private static readonly DEFAULT_URL = "http://rr0.org"
   private baseUrl: URL | undefined
 
   init(setupProperties: Properties): void {
     let spec = setupProperties.getProperty("archipelago:ovnifrance:url")
     if (spec == null) {
-      spec = RR0DatabaseAdapter.DEFAULT_URL
+      spec = RR0ArchipelagoAdapter.DEFAULT_URL
     }
     try {
       this.baseUrl = new URL(spec)
@@ -132,8 +133,8 @@ export class RR0DatabaseAdapter extends AbstractDatabaseAdapter {
           }
         }
       }
-    } catch (var22) {
-      throw new MetaException(var22)
+    } catch (e) {
+      throw new MetaException(e as Error)
     }
   }
 

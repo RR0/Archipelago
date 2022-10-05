@@ -8,12 +8,12 @@ import {MetaException} from "archipelago/api/model/MetaException"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
 
 
-export class OVNIFranceDatabaseAdapter extends AbstractDatabaseAdapter {
+export class OvniFranceArchipelagoAdapter extends AbstractDatabaseAdapter {
   static readonly FIELD_NAMES = ["Num cas", "Départ.", "Ville", "Latitude", "Longitude", "CR Observation", "Typ Obs", "Date", "Heure", "Nbre Objets", "Type Objet", "Couleur", "Brillance", "Effetvisuel", "Disp inst", "Type Entité", "Effets témoin", "Effet Physique", "Nbre Témoins", "Enq Off", "", "Météo", "Année", "Atter"]
   static readonly DESCRIPTION_FIELD_INDEX = 5
   static readonly DATE_FIELD_INDEX = 7
   static readonly HOUR_FIELD_INDEX = 8
-  private static readonly DEFAULT_URL = "http://ovnifrance.free.fr"
+  private static readonly DEFAULT_URL = "https://baseovnifrance.free.fr/"
   private baseUrl: URL
   private csvDelimiter = "&"
 
@@ -23,7 +23,7 @@ export class OVNIFranceDatabaseAdapter extends AbstractDatabaseAdapter {
   init(setupProperties: Properties): void {
     let spec = setupProperties.getProperty("archipelago:ovnifrance:url")
     if (spec == null) {
-      spec = OVNIFranceDatabaseAdapter.DEFAULT_URL
+      spec = OvniFranceArchipelagoAdapter.DEFAULT_URL
     }
     try {
       this.baseUrl = new URL(spec)
@@ -68,8 +68,8 @@ export class OVNIFranceDatabaseAdapter extends AbstractDatabaseAdapter {
         let lineNumber
         for (lineNumber = 0; lineNumber < values.length; ++lineNumber) {
           const line = values[lineNumber]
-          if (dateToFind.equals(line[OVNIFranceDatabaseAdapter.DATE_FIELD_INDEX])) {
-            const description = line[OVNIFranceDatabaseAdapter.DESCRIPTION_FIELD_INDEX]
+          if (dateToFind.equals(line[OvniFranceArchipelagoAdapter.DATE_FIELD_INDEX])) {
+            const description = line[OvniFranceArchipelagoAdapter.DESCRIPTION_FIELD_INDEX]
             sighting.set("content", description, this)
             break
           }

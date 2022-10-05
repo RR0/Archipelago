@@ -1,6 +1,6 @@
-import {UFOPlatformControllerImpl} from "archipelago/impl/src/ufomatics/archipelago/control/UFOPlatformControllerImpl"
-import {LocalizerImpl} from "archipelago/impl/src/ufomatics/archipelago/util/LocalizerImpl"
-import {MainFrame} from "archipelago/impl/src/ufomatics/archipelago/view/swing/MainFrame"
+import {UFOPlatformControllerImpl} from "archipelago/impl/control/UFOPlatformControllerImpl"
+import {LocalizerImpl} from "archipelago/impl/util/LocalizerImpl"
+import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
 
 /**
  *
@@ -13,8 +13,8 @@ export class Main {
   private static async initController(args: string[]): Promise<void> {
     const localizer = new LocalizerImpl(args)
     try {
-      await import("rr0/database/archipelago/RR0DatabaseAdapter")
-      await import("rr0/database/archipelago/OVNIFranceDatabaseAdapter")
+      await import("database/rr0/RR0ArchipelagoAdapter")
+      await import("database/ovnifrance/OvniFranceArchipelagoAdapter")
     } catch (e) {
       console.error(e)
     }

@@ -1,16 +1,20 @@
 import {DatabaseAdapter} from "archipelago/api/model/DatabaseAdapter"
 import {Localizer} from "archipelago/api/util/Localizer"
 import {MetaMapping} from "archipelago/api/model/MetaMapping"
-import {MetaMappingImpl} from "archipelago/impl/src/ufomatics/archipelago/model/MetaMappingImpl"
+import {MetaMappingImpl} from "archipelago/impl/model/MetaMappingImpl"
 import {MetaType, TEXT} from "archipelago/api/model/MetaType"
 import {Properties} from "archipelago/api/util/jsdk/util/Properties"
 import {Database} from "archipelago/api/model/Database"
-import {DatabaseImpl} from "archipelago/impl/src/ufomatics/archipelago/model/DatabaseImpl"
+import {DatabaseImpl} from "archipelago/impl/model/DatabaseImpl"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
 import {MetaException} from "archipelago/api/model/MetaException"
 import {MetaModel} from "archipelago/api/model/MetaModel"
 import {HashSet} from "archipelago/api/util/jsdk/util/HashSet"
 import {StringTokenizer} from "archipelago/api/util/jsdk/util/StringTokenizer"
+import {Preferences} from "archipelago/api/util/jsdk/Preferences"
+import {JFile} from "archipelago/api/util/jsdk/util/JFile"
+import {MetaModelImpl} from "archipelago/api/model/MetaModelImpl"
+import {JSet} from "archipelago/api/util/jsdk/util/JSet"
 
 /**
  *
@@ -18,25 +22,25 @@ import {StringTokenizer} from "archipelago/api/util/jsdk/util/StringTokenizer"
 export class UFOPlatformControllerImpl implements UFOPlatformController {
   private adapters = new HashSet<DatabaseAdapter>()
   private metaMapping: MetaMapping = new MetaMappingImpl()
-  private preferences = Preferences.userNodeForPackage(getClass())
+  private preferences = Preferences.userNodeForPackage(this.getClass())
 
   constructor(protected localizer: Localizer) {
     this.initAdapters()
     this.initMetaMapping()
   }
 
-  static find(tosubclass: Class): Set<Class> {
-    const classes = new Set<Class>()
+  static find(tosubclass: Class): JSet<Class> {
+    const classes = new HashSet<Class>()
     const pcks = Package.getPackages()
     for (let pck of pcks) {
-      classes.addAll(find(pck.getName(), tosubclass))
+      classes.addAll(this.find(pck.getName(), tosubclass))
     }
     return classes
   }
 
-  static find(pckgname: string, toSubClass: Class): Set<Class> {
-    const classes = new Set<Class>()
-    const name = String(pckgname)
+  static find(pckgname: string, toSubClass: Class): JSet<Class> {
+    const classes = new HashSet<Class>()
+    let name = String(pckgname)
     if (!name.startsWith("/")) {
       name = "/" + name
     }
@@ -45,7 +49,7 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
     // Get a File object for the package
     const url = Launcher.class.getResource(name)
     if (url != null) {
-      const directory = new File(url.getFile())
+      const directory = new JFile(url.getFile())
       if (directory.exists()) {
         // Get the list of the files contained in the package
         const files = directory.list()
@@ -53,7 +57,7 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
           // we are only interested in .class files
           if (file.endsWith(".class")) {
             // removes the .class extension
-            const classname = file.substring(0, file.length() - 6)
+            const classname = file.substring(0, file.length - 6)
             try {
               // Try to create an instance of the object
               const aClass = Class.forName(pckgname + "." + classname)
@@ -89,7 +93,7 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
         if (o == null) {
           throw new MetaException("Could not resolve content of file " + name)
         }
-        if (o instanceof MetaModel) {
+        if (o instanceof MetaModelImpl) {
           this.metaMapping.setMetaModel(o as MetaModel)
         } else {
           this.metaMapping = o as MetaMapping
@@ -99,18 +103,18 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
         try {
           this.preferences.flush()
         } catch (e) {
-          e.printStackTrace()
+          console.error(e)
         }
       } finally {
         xmlDecoder.close()
       }
     } catch (e) {
       console.error(e)
-      throw new MetaException("Could not find file " + name, e)
+      throw new MetaException("Could not find file " + name, e as Error)
     }
   }
 
-  getRecentFiles(): HashSet<String> {
+  getRecentFiles(): JSet<String> {
     const recentFiles = new HashSet<String>()
     const recentFilesStr = this.preferences.get("recentFiles", "")
     const st = new StringTokenizer(recentFilesStr, ";")
@@ -172,7 +176,7 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
   private initAdapters(): void {
     const adapterClasses = UFOPlatformControllerImpl.find(DatabaseAdapter.class)
     const properties = new Properties()
-    for (let adapterClass of adapterClasses) {
+    for (let adapterClass of adapterClasses._set) {
       try {
         const adapter = adapterClass.newInstance() as DatabaseAdapter
         adapter.setProperties(properties)

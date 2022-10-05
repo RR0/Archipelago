@@ -6,6 +6,10 @@ export class Locale {
   getCountry(): string {
     return this.country
   }
+
+  static getDefault(): Locale {
+
+  }
 }
 
 export const FRENCH = new Locale("fr", "FR")

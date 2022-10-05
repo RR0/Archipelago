@@ -1,6 +1,6 @@
 import {JDialog} from "archipelago/api/util/jsdk/swing/JDialog"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
-import {MainFrame} from "archipelago/impl/src/ufomatics/archipelago/view/swing/MainFrame"
+import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
 import {JCheckBox} from "archipelago/api/util/jsdk/swing/JCheckBox"
 
 export class PreferencesDialog extends JDialog {
