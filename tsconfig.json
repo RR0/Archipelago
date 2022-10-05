@@ -1,0 +1,56 @@
+{
+  "@extends": "@tsconfig/node14/tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "composite": true,
+    "target": "ES2021",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "module": "CommonJS",
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "allowSyntheticDefaultImports": true,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "*": [
+        "./*",
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test",
+    "tool",
+    ".",
+    "package.json"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "dist",
+    "./coverage",
+    "**/main.bundle.js"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
+}
