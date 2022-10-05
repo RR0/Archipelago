@@ -1,9 +1,14 @@
 import {Dimension} from "archipelago/api/util/jsdk/swing/Dimension"
+import {Point} from "archipelago/api/util/jsdk/swing/Point"
 
 export class JWindowEvent {
-  static WINDOW_CLOSING = 0
+  static WINDOW_CLOSING = "0"
+
+  constructor(private id: string) {
+  }
 
   getID(): string {
+    return this.id
   }
 }
 
@@ -12,8 +17,7 @@ export class JWindow {
   private enabled = true
   private visible = true
   private size: Dimension = new Dimension(800, 600)
-  private x = 0
-  private y = 0
+  private location = new Point()
 
   isVisible(): boolean {
     return this.visible
@@ -38,12 +42,15 @@ export class JWindow {
     return this.enabled
   }
 
-  protected getSize(): Dimension {
+  getSize(): Dimension {
     return this.size
   }
 
-  protected setLocation(x: number, y: number) {
-    this.x = x
-    this.y = y
+  setLocation(x: number, y: number) {
+    this.location = new Point(x, y)
+  }
+
+  getLocation(): Point {
+    return this.location
   }
 }

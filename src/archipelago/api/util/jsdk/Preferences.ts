@@ -2,12 +2,10 @@ export class Preferences {
 
   private readonly map = new Map<string, any>()
 
-  static userNodeForPackage(clazz: any): Preferences {
-
+  static userNodeForPackage(_clazz: any): Preferences {
   }
 
   flush() {
-
   }
 
   get(key: string, defaultValue: string) {

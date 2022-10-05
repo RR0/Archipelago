@@ -19,8 +19,7 @@ export class MergerImpl implements Merger {
     const firstValues = firstObject.getValues()
     const iterator = firstValues.entries()
     while (iterator.hasNext()) {
-      const entry = (Map.Entry)
-      iterator.next()
+      const entry = iterator.next() as Map.Entry
       const fieldName = entry.getKey() as string
       const firstValue = entry.getValue()
       const secondValue = secondObject.get(fieldName)

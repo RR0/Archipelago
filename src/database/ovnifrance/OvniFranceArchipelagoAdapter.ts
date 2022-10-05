@@ -3,7 +3,7 @@ import {Properties} from "archipelago/api/util/jsdk/util/Properties"
 import {MetaObject} from "archipelago/api/model/MetaObject"
 import {GregorianCalendar} from "archipelago/api/util/jsdk/util/GregorianCalendar"
 import {Calendar} from "archipelago/api/util/jsdk/util/Calendar"
-import {FRANCE, FRENCH} from "archipelago/api/util/jsdk/Locale"
+import {FRANCE, FRENCH} from "archipelago/api/util/jsdk/util/Locale"
 import {MetaException} from "archipelago/api/model/MetaException"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
 

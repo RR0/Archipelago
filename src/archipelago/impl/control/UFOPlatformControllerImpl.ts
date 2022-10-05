@@ -174,7 +174,7 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
   }
 
   private initAdapters(): void {
-    const adapterClasses = UFOPlatformControllerImpl.find(DatabaseAdapter.class)
+    const adapterClasses = UFOPlatformControllerImpl.find(DatabaseAdapter)
     const properties = new Properties()
     for (let adapterClass of adapterClasses._set) {
       try {

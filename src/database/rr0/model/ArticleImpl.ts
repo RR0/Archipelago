@@ -1,6 +1,6 @@
 import {Article} from "database/rr0/model/Article"
 import {Source} from "database/rr0/model/Source"
-import {Locale} from "archipelago/api/util/jsdk/Locale"
+import {Locale} from "archipelago/api/util/jsdk/util/Locale"
 
 export class ArticleImpl implements Article {
 

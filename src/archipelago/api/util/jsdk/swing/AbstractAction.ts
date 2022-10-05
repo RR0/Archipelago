@@ -1,5 +1,5 @@
 import {Action} from "archipelago/api/util/jsdk/swing/Action"
-import {ActionEvent} from "archipelago/api/util/jsdk/swing/ActionEvent"
+import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 
 export abstract class AbstractAction implements Action {
 

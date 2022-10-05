@@ -4,7 +4,7 @@ import {AbstractDatabaseAdapter} from "archipelago/api/model/AbstractDatabaseAda
 import {MetaTypeImpl} from "archipelago/api/model/MetaTypeImpl"
 import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaException} from "archipelago/api/model/MetaException"
-import {FRANCE, FRENCH, Locale} from "archipelago/api/util/jsdk/Locale"
+import {FRANCE, FRENCH, Locale} from "archipelago/api/util/jsdk/util/Locale"
 import {Calendar} from "archipelago/api/util/jsdk/util/Calendar"
 import {GregorianCalendar} from "archipelago/api/util/jsdk/util/GregorianCalendar"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
@@ -75,7 +75,7 @@ export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
     try {
       const moment = sighting.get("moment")
       const calendar = this.getCalendar(moment)
-      const webPageParser = new Parser(this.baseUrl + "/" + calendar.get(1) + ".html")
+      const webPageParser = new Parser(`${this.baseUrl}/${calendar.get(1)}.html`)
       const nodeFactory = new class extends StringNodeFactory {
         public createStringNode(page: Page, start: number, end: number): Text {
           const node = super.createStringNode(page, start, end)
@@ -89,10 +89,8 @@ export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
                 --i
               }
             }
-
             node.setText(buffer.toString())
           }
-
           return node
         }
       }()

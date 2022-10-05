@@ -1,6 +1,6 @@
 import {User} from "archipelago/api/model/User"
 import {Identity} from "archipelago/api/model/Identity"
-import {Locale} from "archipelago/api/util/jsdk/Locale"
+import {Locale} from "archipelago/api/util/jsdk/util/Locale"
 
 /**
  *

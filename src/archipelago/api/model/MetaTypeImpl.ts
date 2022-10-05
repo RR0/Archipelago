@@ -7,9 +7,9 @@ import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
  *
  */
 export class MetaTypeImpl implements MetaType, JSerializable {
-  private fields = new Set<MetaField>()
+  protected fields = new Set<MetaField>()
 
-  constructor(private name: string) {
+  constructor(protected name: string) {
   }
 
   setName(name: string): void {
@@ -44,3 +44,6 @@ export class MetaTypeImpl implements MetaType, JSerializable {
     return this.getName()
   }
 }
+
+export const VOID = new class extends MetaTypeImpl {
+}("void")

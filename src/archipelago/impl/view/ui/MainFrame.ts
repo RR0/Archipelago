@@ -1,11 +1,7 @@
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
 import {ResourceBundle} from "archipelago/api/util/jsdk/util/ResourceBundle"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
-import {ActionEvent} from "archipelago/api/util/jsdk/swing/ActionEvent"
-import {FileFilter} from "archipelago/api/util/jsdk/FileFilter"
-import {JFileChooser} from "archipelago/api/util/jsdk/swing/JFileChooser"
-import {JOptionPane} from "archipelago/api/util/jsdk/swing/JOptionPane"
+import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
 import {MetaField} from "archipelago/api/model/MetaField"
 import {Action} from "archipelago/api/util/jsdk/swing/Action"
@@ -22,12 +18,7 @@ import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
 import {MetaModel} from "archipelago/api/model/MetaModel"
 import {JMenu} from "archipelago/api/util/jsdk/swing/JMenu"
 import {JButton} from "archipelago/api/util/jsdk/swing/JButton"
-import {DatasourcePane} from "archipelago/impl/view/ui/DatasourcePane"
 import {JTree} from "archipelago/api/util/jsdk/swing/JTree"
-import {PreferencesDialog} from "archipelago/impl/view/ui/PreferencesDialog"
-import {FunctionPane} from "archipelago/impl/view/ui/FunctionPane"
-import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
-import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
 import {DefaultTreeModel} from "archipelago/api/util/jsdk/swing/DefaultTreeModel"
 import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/DefaultMutableTreeNode"
 import {JMouseEvent} from "archipelago/api/util/jsdk/swing/JMouseEvent"
@@ -40,265 +31,19 @@ import {JMenuBar} from "archipelago/api/util/jsdk/swing/JMenuBar"
 import {JTabbedPane} from "archipelago/api/util/jsdk/swing/JTabbedPane"
 import {JSplitPane, JSplitPaneDirection} from "archipelago/api/util/jsdk/swing/JSplitPane"
 import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/DefaultTreeCellRenderer"
-import {JFile} from "archipelago/api/util/jsdk/util/JFile"
 import {Color} from "archipelago/api/util/jsdk/swing/Color"
 import {Dimension} from "archipelago/api/util/jsdk/swing/Dimension"
 import {JWindowEvent} from "archipelago/api/util/jsdk/swing/JWindow"
-
-class AboutAction extends AbstractAction {
-
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("About"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "About his application")
-  }
-
-  actionPerformed(_e: ActionEvent) {
-    JOptionPane.showMessageDialog(this.mainFrame, "Archipelago 1.0a\n(c) 2006 Jérôme Beau\nGNU Licensed")
-  }
-}
-
-class AddDatasourceAction extends AbstractAction {
-
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("Datasource.add"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Define a new datasource")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    const newDatasource = this.mainFrame.controller.createDatasource()
-    const pane = new DatasourcePane(this.mainFrame.controller, newDatasource)
-    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, pane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, newDatasource)
-    if (choosenOption == JDialogResult.OK_OPTION) {
-      pane.ok()
-      this.mainFrame.controller.addDatasource(newDatasource)
-//            modelTree.setSelectionPath(path);
-      this.mainFrame.setModified()
-    }
-    const menuBar = this.mainFrame.getJMenuBar()
-    if (menuBar) {
-      menuBar.remove(this.mainFrame.databaseMenuIndex)
-      menuBar.add(this.mainFrame.databaseMenu(), this.mainFrame.databaseMenuIndex)
-      menuBar.validate()
-    }
-  }
-}
-
-class OpenMetamodelAction extends AbstractAction {
-  protected openDialog: JFileChooser
-
-  public constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("File.open"))
-    this.openDialog = new JFileChooser()
-    const filter = new class extends FileFilter {
-      accept(_f: JFile): boolean {
-        return _f.getAbsolutePath().endsWith(".xml")
-      }
-
-      getDescription(): string {
-        return "Archipelago metamodel XML files"
-      }
-    }()
-    this.openDialog.setFileFilter(filter)
-    mainFrame.putValue(MainFrame.SHORT_DESCRIPTION, "Open an existing metamodel file")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    const returnVal = this.openDialog.showOpenDialog(this.mainFrame)
-    if (returnVal == JDialogResult.APPROVE_OPTION) {
-      let selectedFile = this.openDialog.getSelectedFile()
-      if (selectedFile) {
-        this.loadMetaModel(selectedFile.getAbsolutePath())
-        this.mainFrame.loadMetaData(this.mainFrame.controller.getMetaModel(), this.mainFrame.metaModelTreeModel, this.mainFrame.modelTree)
-      }
-    }
-  }
-
-  private loadMetaModel(name: string): void {
-    try {
-      this.mainFrame.controller.loadMetaMapping(name)
-    } catch (e) {
-      JOptionPane.showMessageDialog(this.mainFrame, (e as Error).message, "Error while loading ", JOptionPane.ERROR_MESSAGE)
-    }
-  }
-}
-
-class SaveMetamodelAction extends AbstractAction {
-
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("File.save"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Save the current metamodel")
-    this.mainFrame.setEnabled(this.mainFrame.controller.hasMetaModel())
-  }
-
-  public actionPerformed(e: ActionEvent): void {
-    if (this.mainFrame.currentMetamodelFilename == null) {
-      this.mainFrame.saveAsAction.actionPerformed(e)
-    } else {
-      try {
-        this.mainFrame.controller.saveMetaMapping(this.mainFrame.currentMetamodelFilename)
-      } catch (e1) {
-        console.error(e1)
-        JOptionPane.showMessageDialog(this.mainFrame, (e1 as Error).message)
-      }
-    }
-  }
-}
-
-class SaveMetamodelAsAction extends AbstractAction {
-  private saveDialog: JFileChooser
-
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("File.saveAs"))
-    this.mainFrame.putValue(MainFrame.SHORT_DESCRIPTION, "Save the current metamodel in a given file")
-    this.mainFrame.setEnabled(this.mainFrame.controller.hasMetaModel())
-
-    this.saveDialog = new JFileChooser()
-    const filter = new class extends FileFilter {
-      accept(_f: JFile): boolean {
-        return _f.getAbsolutePath().endsWith(".xml")
-      }
-
-      getDescription(): string {
-        return "Archipelago metamodel XML files"
-      }
-    }()
-    this.saveDialog.setFileFilter(filter)
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    const returnVal = this.saveDialog.showOpenDialog(this.mainFrame)
-    if (returnVal == JDialogResult.APPROVE_OPTION) {
-      try {
-        let selectedFile = this.saveDialog.getSelectedFile()
-        if (selectedFile) {
-          this.mainFrame.currentMetamodelFilename = selectedFile.getAbsolutePath()
-          this.mainFrame.controller.saveMetaMapping(this.mainFrame.currentMetamodelFilename)
-        }
-      } catch (e1) {
-        console.error(e1)
-        JOptionPane.showMessageDialog(this.mainFrame, (e1 as Error).message)
-      }
-    }
-  }
-}
-
-class PreferencesAction extends AbstractAction {
-  protected newDatasourceDialog: PreferencesDialog
-
-  constructor(protected mainFrame: MainFrame) {
-    super("Preferences")
-    this.newDatasourceDialog = new PreferencesDialog(this.mainFrame, this.mainFrame.controller)
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Setup application preferences")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    this.newDatasourceDialog.pack()
-    this.newDatasourceDialog.setVisible(true)
-  }
-}
-
-class ExitAction extends AbstractAction {
-
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("File.exit"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Exit the application")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    if (this.exitConfirmation()) {
-      this.mainFrame.controller.close()
-      this.mainFrame.dispose()
-      process.exit(0)
-    }
-  }
-
-  private exitConfirmation(): boolean {
-    return !this.mainFrame.checkExitConfirmation || JOptionPane.showConfirmDialog(this.mainFrame, "Are you" +
-      " sure ?") == JDialogResult.APPROVE_OPTION
-  }
-}
-
-class AddClassAction extends AbstractAction {
-  public constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("MetaType.add"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Add a new type to the metamodel")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    const newMetaType = this.mainFrame.controller.getMetaModel().createType()
-    const typePane = new TypePane(this.mainFrame.controller, newMetaType)
-    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, typePane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, newMetaType)
-    if (choosenOption == JDialogResult.OK_OPTION) {
-      typePane.ok()
-      this.mainFrame.controller.getMetaModel().addMetaType(newMetaType)
-      const metaTypeNode = new DefaultMutableTreeNode(newMetaType)
-      const root = this.mainFrame.metaModelTreeModel.getRoot() as MutableTreeNode
-      this.mainFrame.metaModelTreeModel.insertNodeInto(metaTypeNode, root, root.getChildCount())
-      const pathes = metaTypeNode.getPath()
-      const path = new TreePath(pathes)
-      this.mainFrame.modelTree.makeVisible(path)
-//            modelTree.setSelectionPath(path);
-      this.mainFrame.setModified()
-    }
-  }
-}
-
-class AddFunctionAction extends AbstractAction {
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("MetaFunction.add"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Add a new function to the metamodel")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    const metaFunction = this.mainFrame.controller.getMetaModel().createFunction()
-    const typePane = new FunctionPane(this.mainFrame.controller, metaFunction)
-    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, typePane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, metaFunction)
-    if (choosenOption == JDialogResult.OK_OPTION) {
-      typePane.ok()
-      this.mainFrame.controller.getMetaModel().addFunction(metaFunction)
-      const metaTypeNode = new DefaultMutableTreeNode(metaFunction)
-      const root = this.mainFrame.metaModelTreeModel.getRoot() as MutableTreeNode
-      this.mainFrame.metaModelTreeModel.insertNodeInto(metaTypeNode, root, root.getChildCount())
-      const pathes = metaTypeNode.getPath()
-      const path = new TreePath(pathes)
-      this.mainFrame.modelTree.makeVisible(path)
-//            modelTree.setSelectionPath(path);
-      this.mainFrame.setModified()
-    }
-  }
-}
-
-class AddFieldAction extends AbstractAction {
-
-  constructor(protected mainFrame: MainFrame) {
-    super(MainFrame.resourceBundle.getString("MetaField.add"))
-    this.mainFrame.putValue(JFrame.SHORT_DESCRIPTION, "Add a new field to this class")
-  }
-
-  actionPerformed(_e: ActionEvent): void {
-    const lastSelectedComponent = this.mainFrame.modelTree.getLastSelectedPathComponent()
-    if (lastSelectedComponent instanceof DefaultMutableTreeNode) {
-      const metaTypeNode = lastSelectedComponent as DefaultMutableTreeNode
-      const metaType = metaTypeNode.getUserObject() as MetaType
-      const metaField = metaType.createField() as MetaField
-
-      const fieldPane = new FieldPane(this.mainFrame.controller, metaField)
-      const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, fieldPane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, metaField)
-      if (choosenOption == JDialogResult.OK_OPTION) {
-        fieldPane.ok()
-        metaType.addField(metaField)
-        const fieldNode = new DefaultMutableTreeNode(metaField)
-        this.mainFrame.metaModelTreeModel.insertNodeInto(fieldNode, metaTypeNode, metaTypeNode.getChildCount())
-        const pathes = fieldNode.getPath()
-        const path = new TreePath(pathes)
-        this.mainFrame.modelTree.makeVisible(path)
-        this.mainFrame.setModified()
-      }
-    } else {
-      JOptionPane.showMessageDialog(this.mainFrame, MainFrame.resourceBundle.getString("SelectATypeNodeFirst"))
-    }
-  }
-}
+import {SaveMetamodelAction} from "archipelago/impl/view/ui/SaveMetamodelAction"
+import {AddFieldAction} from "archipelago/impl/view/ui/AddFieldAction"
+import {AddFunctionAction} from "archipelago/impl/view/ui/AddFunctionAction"
+import {AddClassAction} from "archipelago/impl/view/ui/AddClassAction"
+import {ExitAction} from "archipelago/impl/view/ui/ExitAction"
+import {PreferencesAction} from "archipelago/impl/view/ui/PreferencesAction"
+import {SaveMetamodelAsAction} from "archipelago/impl/view/ui/SaveMetamodelAsAction"
+import {OpenMetamodelAction} from "archipelago/impl/view/ui/OpenMetamodelAction"
+import {AddDatasourceAction} from "archipelago/impl/view/ui/AddDatasourceAction"
+import {AboutAction} from "archipelago/impl/view/ui/AboutAction"
 
 /**
  *
@@ -307,23 +52,18 @@ export class MainFrame extends JFrame {
   static resourceBundle: ResourceBundle
   checkExitConfirmation = false
   saveAsAction: SaveMetamodelAsAction
-  public currentMetamodelFilename: string
+  public currentMetamodelFilename: string | undefined = undefined
   metaModelTreeModel: DefaultTreeModel
   readonly modelTree: JTree
   databaseMenuIndex: number
-  private exitAction: Action
+  private readonly exitAction: Action
   private addDatasourceAction: AddDatasourceAction
-  private preferencesAction: PreferencesAction
-  private aboutAction: AboutAction
   private saveAction: SaveMetamodelAction
-  private metamodelMenuIndex: number
-  private splitPane: JSplitPane
+  private readonly splitPane: JSplitPane
   private addClassAction: AddClassAction
   private addFieldAction: AddFieldAction
   private addFunctionAction: AddFunctionAction
-  private openMetaModelAction: OpenMetamodelAction
-  private rootNode: DefaultMutableTreeNode
-  private fileMenuIndex: number
+  private readonly rootNode: DefaultMutableTreeNode
 
   constructor(readonly controller: UFOPlatformController) {
     super(MainFrame.getBundle().getString("MainFrame.title"))
@@ -359,7 +99,9 @@ export class MainFrame extends JFrame {
     this.modelTree.setCellRenderer(renderer)
 
     this.exitAction = new ExitAction(this)
-    this.setupMenuBar()
+    const aboutAction = new AboutAction(this)
+    const saveAsAction = this.saveAsAction = new SaveMetamodelAsAction(this)
+    this.databaseMenuIndex = this.setupMenuBar(aboutAction, saveAsAction)
 
     const popup = new JPopupMenu()
     popup.add(new JMenuItem(self.addClassAction))
@@ -464,9 +206,9 @@ export class MainFrame extends JFrame {
     this.contents = new JPanel(new BorderLayout())
     this.contents.setBackground(Color.GRAY)
     this.contents.setPreferredSize(new Dimension(800, 600))
-    const splitPane = new JSplitPane(JSplitPaneDirection.HORIZONTAL_SPLIT, self.modelTree, self.contents)
+    this.splitPane = new JSplitPane(JSplitPaneDirection.HORIZONTAL_SPLIT, self.modelTree, self.contents)
 
-    this.getContentPane().add(splitPane)
+    this.getContentPane().add(this.splitPane)
 
     this.loadMetaData(controller.getMetaModel(), this.metaModelTreeModel, this.modelTree)
   }
@@ -555,20 +297,18 @@ export class MainFrame extends JFrame {
     tree.removeAll()
   }
 
-  private setupMenuBar(): void {
+  private setupMenuBar(aboutAction: AboutAction, saveMetataModelAsAction: SaveMetamodelAsAction): number {
     const menuBar = new JMenuBar()
-
-    this.fileMenuIndex = menuBar.getMenuCount()
-    menuBar.add(this.fileMenu())
-
-    this.metamodelMenuIndex = menuBar.getMenuCount()
+    menuBar.add(this.fileMenu(saveMetataModelAsAction))
     menuBar.add(this.metamodelMenu())
 
-    this.databaseMenuIndex = menuBar.getMenuCount()
+    const databaseMenuIndex = menuBar.getMenuCount()
     menuBar.add(this.databaseMenu())
 
-    menuBar.add(this.helpMenu())
+    menuBar.add(this.helpMenu(aboutAction))
     this.setJMenuBar(menuBar)
+
+    return databaseMenuIndex
   }
 
   private metamodelMenu(): JMenu {
@@ -586,26 +326,24 @@ export class MainFrame extends JFrame {
     return menu
   }
 
-  private helpMenu(): JMenu {
+  private helpMenu(aboutAction: AboutAction): JMenu {
     const menu = new JMenu(MainFrame.resourceBundle.getString("Help"))
     menu.add(new JMenuItem("Search"))
     menu.add(new JMenuItem("Contents"))
     menu.add(new JSeparator())
-    this.aboutAction = new AboutAction(this)
-    menu.add(new JMenuItem(this.aboutAction))
+    menu.add(new JMenuItem(aboutAction))
     return menu
   }
 
-  private fileMenu(): JMenu {
+  private fileMenu(saveAsAction: SaveMetamodelAsAction): JMenu {
     const menu = new JMenu(MainFrame.resourceBundle.getString("File"))
-    this.openMetaModelAction = new OpenMetamodelAction(this)
-    menu.add(new JMenuItem(this.openMetaModelAction))
+    const openMetaModelAction = new OpenMetamodelAction(this)
+    menu.add(new JMenuItem(openMetaModelAction))
 
     this.saveAction = new SaveMetamodelAction(this)
     menu.add(new JMenuItem(this.saveAction))
 
-    this.saveAsAction = new SaveMetamodelAsAction(this)
-    menu.add(new JMenuItem(this.saveAsAction))
+    menu.add(new JMenuItem(saveAsAction))
 
     const recentFilesSubMenu = new JMenu(MainFrame.resourceBundle.getString("RecentFiles"))
     const recentFiles = this.controller.getRecentFiles()
@@ -619,9 +357,7 @@ export class MainFrame extends JFrame {
 //            recentFilesSubMenu.setEnabled(false);
     }
     menu.add(recentFilesSubMenu)
-
     menu.add(new JSeparator())
-
     const preferencesAction = new PreferencesAction(this)
     menu.add(new JMenuItem(preferencesAction))
     menu.add(new JSeparator())

@@ -3,14 +3,15 @@ import {MetaField} from "archipelago/api/model/MetaField"
 import {MetaType} from "archipelago/api/model/MetaType"
 import {MetaFieldImpl} from "archipelago/api/model/MetaFieldImpl"
 import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
+import {VOID} from "archipelago/api/model/MetaTypeImpl"
 
 /**
  *
  */
 export class MetaFunctionImpl implements MetaFunction, JSerializable {
-  private name: string
+  private name = ""
   private parameters = new Set<MetaField>()
-  private returnType: MetaType
+  private returnType: MetaType = VOID
 
   constructor() {
   }

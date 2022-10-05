@@ -7,14 +7,14 @@ import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
  */
 export class MetaFieldImpl implements MetaField, JSerializable {
 
-  private owner: MetaType
+ // private owner: MetaType
 
   constructor(protected name: string, protected type: MetaType) {
   }
 
-  getOwner(): MetaType {
-    return this.owner
-  }
+  /* getOwner(): MetaType {
+     return this.owner
+   }*/
 
   getType(): MetaType {
     return this.type
@@ -32,9 +32,9 @@ export class MetaFieldImpl implements MetaField, JSerializable {
     this.type = type
   }
 
-  setOwner(owner: MetaType): void {
+  /*setOwner(owner: MetaType): void {
     this.owner = owner
-  }
+  }*/
 
   retrieve(_databaseMappings: any): void {
     /*

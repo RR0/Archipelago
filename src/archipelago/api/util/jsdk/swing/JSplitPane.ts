@@ -1,5 +1,4 @@
 import {JComponent} from "archipelago/api/util/jsdk/swing/JComponent"
-import {TreeModel} from "archipelago/api/util/jsdk/swing/TreeModel"
 
 export enum JSplitPaneDirection {
   HORIZONTAL_SPLIT = "HORIZONTAL_SPLIT"
@@ -7,7 +6,19 @@ export enum JSplitPaneDirection {
 
 export class JSplitPane extends JComponent {
 
-  constructor(private _direction: JSplitPaneDirection, private _model: TreeModel, _contents: any) {
+  constructor(private _orientation: JSplitPaneDirection, private _leftComponent: JComponent, private _rightComponent: JComponent) {
     super()
+  }
+
+  getOrientation(): JSplitPaneDirection {
+    return this._orientation
+  }
+
+  getLeftComponent(): JComponent {
+    return this._leftComponent
+  }
+
+  getRightComponent(): JComponent {
+    return this._rightComponent
   }
 }

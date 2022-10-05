@@ -8,17 +8,7 @@ export enum JDialogResult {
 
 export class JDialog extends JWindow {
 
-  private visible = true
-
   constructor(protected parent: JFrame, protected modal: boolean) {
     super()
-  }
-
-  isVisible(): boolean {
-    return this.visible
-  }
-
-  setVisible(value: boolean) {
-    this.visible = value
   }
 }

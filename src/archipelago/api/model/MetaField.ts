@@ -1,15 +1,15 @@
 import {MetaType} from "archipelago/api/model/MetaType"
 
 /**
- * @author <a href="mailto:rr0@rr0.org">Jerome Beau</a>
- * @version $revision$
+ *
  */
 export interface MetaField {
   /**
    *
    * @return The MetaObject the field belongs to.
    */
-  getOwner(): MetaType
+
+  //getOwner(): MetaType
 
   /**
    *

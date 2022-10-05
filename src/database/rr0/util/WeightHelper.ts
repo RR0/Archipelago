@@ -1,4 +1,4 @@
-import {Locale, UK, US} from "archipelago/api/util/jsdk/Locale"
+import {Locale, UK, US} from "archipelago/api/util/jsdk/util/Locale"
 
 /**
  * Utility class to convert weight values.

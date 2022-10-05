@@ -5,9 +5,8 @@ import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
 export class DefaultMutableTreeNode<T = any> implements MutableTreeNode<T> {
 
   protected nodes: TreeNode<T>[] = []
-  private userObject: T
 
-  constructor(private content: any) {
+  constructor(private userObject: T) {
   }
 
   add(node: TreeNode<T>) {

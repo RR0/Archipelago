@@ -20,7 +20,7 @@ export class DefaultTreeModel<T = any> implements TreeModel<T> {
 
   }
 
-  insertNodeInto(node: TreeNode<T>, root: TreeNode<T>, childCount: number) {
+  insertNodeInto(_node: TreeNode<T>, _root: TreeNode<T>, _childCount: number): void {
 
   }
 }

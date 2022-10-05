@@ -1,3 +1,3 @@
-export interface TreeModel<T = any> {
+export interface TreeModel {
   removeAll(): void
 }

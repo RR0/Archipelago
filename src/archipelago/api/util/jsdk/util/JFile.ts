@@ -1,6 +1,6 @@
 export class JFile {
 
-  constructor(private name: string) {
+  constructor(private _name: string) {
   }
 
   getAbsolutePath(): string {
