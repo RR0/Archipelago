@@ -1,4 +1,4 @@
-<img src="doc/web/archipelago/images/Archipelago.png" align=right>
+<img src="doc/web/archipelago/images/Archipelago.png" align=right alt="Archipelago logo">
 
 The Archipelago project aims to solve the problem of data access and sharing by building a meta layer over databases that will enable the user to access data without depending on their underlying structures or technologies.
 
@@ -10,3 +10,4 @@ This branch is about a TypeScript implementation of Archipelago as a web server.
 
 It allows to browse a metamodel and how its fields are mapped to the underlying databases.
 
+See the [Java branch](https://github.com/RR0/Archipelago/tree/java) for a web server implementation.
