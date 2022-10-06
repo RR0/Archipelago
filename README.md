@@ -13,4 +13,4 @@ It allows to browse a metamodel and how its fields are mapped to the underlying 
 
 <img src="doc/web/archipelago/images/screen1.jpg" alt="Application screenshot">
 
-See the [TypeScript](https://github.com/RR0/Archipelago/tree/java) branch for a standalone app implementation.
+See the [TypeScript branch](https://github.com/RR0/Archipelago/tree/master) for a standalone app implementation.
