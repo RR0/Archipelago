@@ -26,7 +26,7 @@ public class OVNIFranceDatabaseAdapter extends AbstractDatabaseAdapter {
   int HOUR_FIELD_INDEX = 8;
   private URL baseUrl;
   private char csvDelimiter = '&';
-  private static final String DEFAULT_URL = "http://ovnifrance.free.fr";
+  private static final String DEFAULT_URL = "https://baseovnifrance.free.fr";
 
   public OVNIFranceDatabaseAdapter() {
   }
@@ -34,7 +34,7 @@ public class OVNIFranceDatabaseAdapter extends AbstractDatabaseAdapter {
   public void init(Properties setupProperties) throws MetaException {
     String spec = setupProperties.getProperty("archipelago:ovnifrance:url");
     if (spec == null) {
-      spec = "http://ovnifrance.free.fr";
+      spec = DEFAULT_URL;
     }
 
     try {

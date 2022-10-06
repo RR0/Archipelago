@@ -51,7 +51,7 @@ public class RR0DatabaseAdapter extends AbstractDatabaseAdapter {
   public void init(Properties setupProperties) throws MetaException {
     String spec = setupProperties.getProperty("archipelago:ovnifrance:url");
     if (spec == null) {
-      spec = "http://rr0.org";
+      spec = DEFAULT_URL;
     }
 
     try {
