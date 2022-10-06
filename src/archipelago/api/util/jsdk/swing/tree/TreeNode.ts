@@ -1,5 +1,6 @@
 export interface TreeNode<T> {
-  add(subNode: TreeNode<T>): void
+
+  add<C = any>(subNode: TreeNode<C>): void
 
   remove(number: number): void
 

@@ -2,7 +2,7 @@ import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
 import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
 import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 import {DatasourcePane} from "archipelago/impl/view/ui/DatasourcePane"
-import {JOptionPane} from "archipelago/api/util/jsdk/swing/JOptionPane"
+import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "archipelago/api/util/jsdk/swing/JOptionPane"
 import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
 
@@ -16,7 +16,9 @@ export class AddDatasourceAction extends AbstractAction {
   actionPerformed(_e: ActionEvent): void {
     const newDatasource = this.mainFrame.controller.createDatasource()
     const pane = new DatasourcePane(this.mainFrame.controller, newDatasource)
-    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, pane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, newDatasource)
+    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, pane,
+      this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPaneOptionType.OK_CANCEL_OPTION,
+      JOptionPaneMessageType.PLAIN_MESSAGE, null, null, newDatasource)
     if (choosenOption == JDialogResult.OK_OPTION) {
       pane.ok()
       this.mainFrame.controller.addDatasource(newDatasource)
@@ -26,7 +28,7 @@ export class AddDatasourceAction extends AbstractAction {
     const menuBar = this.mainFrame.getJMenuBar()
     if (menuBar) {
       menuBar.remove(this.mainFrame.databaseMenuIndex)
-      menuBar.add(this.mainFrame.databaseMenu(), this.mainFrame.databaseMenuIndex)
+      menuBar.add(this.mainFrame.databaseMenu(this), this.mainFrame.databaseMenuIndex)
       menuBar.validate()
     }
   }

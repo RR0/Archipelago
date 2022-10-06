@@ -1,13 +1,13 @@
 import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
 import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
 import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
-import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/DefaultMutableTreeNode"
+import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/DefaultMutableTreeNode"
 import {MetaType} from "archipelago/api/model/MetaType"
 import {MetaField} from "archipelago/api/model/MetaField"
 import {FieldPane} from "archipelago/impl/view/ui/FieldPane"
-import {JOptionPane} from "archipelago/api/util/jsdk/swing/JOptionPane"
+import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "archipelago/api/util/jsdk/swing/JOptionPane"
 import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
-import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
+import {TreePath} from "archipelago/api/util/jsdk/swing/tree/TreePath"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
 
 export class AddFieldAction extends AbstractAction {
@@ -25,7 +25,9 @@ export class AddFieldAction extends AbstractAction {
       const metaField = metaType.createField() as MetaField
 
       const fieldPane = new FieldPane(this.mainFrame.controller, metaField)
-      const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, fieldPane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, metaField)
+      const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, fieldPane,
+        this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPaneOptionType.OK_CANCEL_OPTION,
+        JOptionPaneMessageType.PLAIN_MESSAGE, null, null, metaField)
       if (choosenOption == JDialogResult.OK_OPTION) {
         fieldPane.ok()
         metaType.addField(metaField)

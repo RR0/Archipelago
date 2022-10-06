@@ -1,4 +1,4 @@
-import {TreeCellRenderer} from "archipelago/api/util/jsdk/swing/TreeCellRenderer"
+import {TreeCellRenderer} from "archipelago/api/util/jsdk/swing/tree/TreeCellRenderer"
 
 export class DefaultTreeCellRenderer implements TreeCellRenderer {
   setClosedIcon(_icon: any): void {

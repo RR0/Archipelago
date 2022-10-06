@@ -2,11 +2,11 @@ import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
 import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
 import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 import {FunctionPane} from "archipelago/impl/view/ui/FunctionPane"
-import {JOptionPane} from "archipelago/api/util/jsdk/swing/JOptionPane"
+import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "archipelago/api/util/jsdk/swing/JOptionPane"
 import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
-import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/DefaultMutableTreeNode"
-import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/MutableTreeNode"
-import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
+import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/DefaultMutableTreeNode"
+import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/MutableTreeNode"
+import {TreePath} from "archipelago/api/util/jsdk/swing/tree/TreePath"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
 
 export class AddFunctionAction extends AbstractAction {
@@ -18,7 +18,9 @@ export class AddFunctionAction extends AbstractAction {
   actionPerformed(_e: ActionEvent): void {
     const metaFunction = this.mainFrame.controller.getMetaModel().createFunction()
     const typePane = new FunctionPane(this.mainFrame.controller, metaFunction)
-    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, typePane, this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, metaFunction)
+    const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, typePane,
+      this.mainFrame.getValue(JFrame.SHORT_DESCRIPTION), JOptionPaneOptionType.OK_CANCEL_OPTION,
+      JOptionPaneMessageType.PLAIN_MESSAGE, null, null, metaFunction)
     if (choosenOption == JDialogResult.OK_OPTION) {
       typePane.ok()
       this.mainFrame.controller.getMetaModel().addFunction(metaFunction)

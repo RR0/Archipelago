@@ -18,19 +18,19 @@ import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
 import {MetaModel} from "archipelago/api/model/MetaModel"
 import {JMenu} from "archipelago/api/util/jsdk/swing/JMenu"
 import {JButton} from "archipelago/api/util/jsdk/swing/JButton"
-import {JTree} from "archipelago/api/util/jsdk/swing/JTree"
-import {DefaultTreeModel} from "archipelago/api/util/jsdk/swing/DefaultTreeModel"
-import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/DefaultMutableTreeNode"
+import {JTree} from "archipelago/api/util/jsdk/swing/tree/JTree"
+import {DefaultTreeModel} from "archipelago/api/util/jsdk/swing/tree/DefaultTreeModel"
+import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/DefaultMutableTreeNode"
 import {JMouseEvent} from "archipelago/api/util/jsdk/swing/JMouseEvent"
 import {MetaTypeImpl} from "archipelago/api/model/MetaTypeImpl"
 import {FocusAdapter} from "archipelago/api/util/jsdk/swing/FocusAdapter"
 import {MetaFieldImpl} from "archipelago/api/model/MetaFieldImpl"
 import {MetaFunctionImpl} from "archipelago/api/model/MetaFunctionImpl"
-import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/MutableTreeNode"
+import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/MutableTreeNode"
 import {JMenuBar} from "archipelago/api/util/jsdk/swing/JMenuBar"
 import {JTabbedPane} from "archipelago/api/util/jsdk/swing/JTabbedPane"
 import {JSplitPane, JSplitPaneDirection} from "archipelago/api/util/jsdk/swing/JSplitPane"
-import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/DefaultTreeCellRenderer"
+import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/tree/DefaultTreeCellRenderer"
 import {Color} from "archipelago/api/util/jsdk/swing/Color"
 import {Dimension} from "archipelago/api/util/jsdk/swing/Dimension"
 import {JWindowEvent} from "archipelago/api/util/jsdk/swing/JWindow"
@@ -80,7 +80,8 @@ export class MainFrame extends JFrame {
     const functionFont = treeFont.deriveFont(Font.ITALIC)
     const self = this
     const renderer = new class extends DefaultTreeCellRenderer {
-      getTreeCellRendererComponent(tree: JTree, value: any, sel: boolean, expanded: boolean, leaf: boolean, row: number, hasFocus: boolean): JComponent {
+      getTreeCellRendererComponent(tree: JTree, value: any, sel: boolean, expanded: boolean, leaf: boolean, row: number,
+                                   hasFocus: boolean): JComponent {
         const comp = this.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus)
         const userObject = (value as DefaultMutableTreeNode).getUserObject()
         if (userObject instanceof MetaTypeImpl) {
@@ -99,9 +100,14 @@ export class MainFrame extends JFrame {
     this.modelTree.setCellRenderer(renderer)
 
     this.exitAction = new ExitAction(this)
-    const aboutAction = new AboutAction(this)
     const saveAsAction = this.saveAsAction = new SaveMetamodelAsAction(this)
-    this.databaseMenuIndex = this.setupMenuBar(aboutAction, saveAsAction)
+    const saveAction = this.saveAction = new SaveMetamodelAction(this)
+    const dataSourceAction = this.addDatasourceAction = new AddDatasourceAction(this)
+    const addClassAction = this.addClassAction = new AddClassAction(this)
+    const addFieldAction = this.addFieldAction = new AddFieldAction(this)
+    const addFunctionAction = this.addFunctionAction = new AddFunctionAction(this)
+    this.databaseMenuIndex = this.setupMenuBar(saveAction, saveAsAction, dataSourceAction, addClassAction,
+      addFieldAction, addFunctionAction)
 
     const popup = new JPopupMenu()
     popup.add(new JMenuItem(self.addClassAction))
@@ -228,7 +234,8 @@ export class MainFrame extends JFrame {
   setVisible(b: boolean): void {
     super.setVisible(b)
     const screenBounds = this.getGraphicsConfiguration().getBounds()
-    this.setLocation((screenBounds.getCenterX() - this.getSize().getWidth() / 2), (screenBounds.getCenterY() - this.getSize().getHeight() / 2))
+    this.setLocation((screenBounds.getCenterX() - this.getSize().getWidth() / 2),
+      (screenBounds.getCenterY() - this.getSize().getHeight() / 2))
   }
 
   isCheckExitConfirmation(): boolean {
@@ -244,7 +251,7 @@ export class MainFrame extends JFrame {
     this.saveAsAction.setEnabled(true)
   }
 
-  databaseMenu(): JMenu {
+  databaseMenu(addDatasourceAction: AddDatasourceAction): JMenu {
     const dataMenu = new JMenu(MainFrame.resourceBundle.getString("Datasources"))
     const datasources = this.controller.getDatasources()
     for (const datasource of datasources) {
@@ -255,8 +262,7 @@ export class MainFrame extends JFrame {
       dataMenu.add(datasourceMenu)
     }
     dataMenu.add(new JSeparator())
-    this.addDatasourceAction = new AddDatasourceAction(this)
-    dataMenu.add(new JMenuItem(this.addDatasourceAction))
+    dataMenu.add(new JMenuItem(addDatasourceAction))
     return dataMenu
   }
 
@@ -297,51 +303,47 @@ export class MainFrame extends JFrame {
     tree.removeAll()
   }
 
-  private setupMenuBar(aboutAction: AboutAction, saveMetataModelAsAction: SaveMetamodelAsAction): number {
+  private setupMenuBar(saveAction: SaveMetamodelAction, saveMetataModelAsAction: SaveMetamodelAsAction,
+                       dataSourceAction: AddDatasourceAction, addClassAction: AddClassAction,
+                       addFieldAction: AddFieldAction, addFunctionAction: AddFunctionAction): number {
     const menuBar = new JMenuBar()
-    menuBar.add(this.fileMenu(saveMetataModelAsAction))
-    menuBar.add(this.metamodelMenu())
+    menuBar.add(this.fileMenu(saveAction, saveMetataModelAsAction))
+    menuBar.add(this.metamodelMenu(addClassAction, addFieldAction, addFunctionAction))
 
     const databaseMenuIndex = menuBar.getMenuCount()
-    menuBar.add(this.databaseMenu())
+    menuBar.add(this.databaseMenu(dataSourceAction))
 
-    menuBar.add(this.helpMenu(aboutAction))
+    menuBar.add(this.helpMenu())
     this.setJMenuBar(menuBar)
 
     return databaseMenuIndex
   }
 
-  private metamodelMenu(): JMenu {
+  private metamodelMenu(addClassAction: AddClassAction, addFieldAction: AddFieldAction,
+                        addFunctionAction: AddFunctionAction): JMenu {
     const menu = new JMenu(MainFrame.getBundle().getString("MetaModel"))
-
-    this.addClassAction = new AddClassAction(this)
-    menu.add(new JMenuItem(this.addClassAction))
-
-    this.addFieldAction = new AddFieldAction(this)
-    menu.add(new JMenuItem(this.addFieldAction))
-
-    this.addFunctionAction = new AddFunctionAction(this)
-    menu.add(new JMenuItem(this.addFunctionAction))
-
+    menu.add(new JMenuItem(addClassAction))
+    menu.add(new JMenuItem(addFieldAction))
+    menu.add(new JMenuItem(addFunctionAction))
     return menu
   }
 
-  private helpMenu(aboutAction: AboutAction): JMenu {
+  private helpMenu(): JMenu {
     const menu = new JMenu(MainFrame.resourceBundle.getString("Help"))
     menu.add(new JMenuItem("Search"))
     menu.add(new JMenuItem("Contents"))
     menu.add(new JSeparator())
+    const aboutAction = new AboutAction(this)
     menu.add(new JMenuItem(aboutAction))
     return menu
   }
 
-  private fileMenu(saveAsAction: SaveMetamodelAsAction): JMenu {
+  private fileMenu(saveAction: SaveMetamodelAction, saveAsAction: SaveMetamodelAsAction): JMenu {
     const menu = new JMenu(MainFrame.resourceBundle.getString("File"))
     const openMetaModelAction = new OpenMetamodelAction(this)
     menu.add(new JMenuItem(openMetaModelAction))
 
-    this.saveAction = new SaveMetamodelAction(this)
-    menu.add(new JMenuItem(this.saveAction))
+    menu.add(new JMenuItem(saveAction))
 
     menu.add(new JMenuItem(saveAsAction))
 

@@ -4,7 +4,7 @@ import {FileFilter} from "archipelago/api/util/jsdk/FileFilter"
 import {JFile} from "archipelago/api/util/jsdk/util/JFile"
 import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
-import {JOptionPane} from "archipelago/api/util/jsdk/swing/JOptionPane"
+import {JOptionPane, JOptionPaneMessageType} from "archipelago/api/util/jsdk/swing/JOptionPane"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
 
 export class OpenMetamodelAction extends AbstractAction {
@@ -41,7 +41,8 @@ export class OpenMetamodelAction extends AbstractAction {
     try {
       this.mainFrame.controller.loadMetaMapping(name)
     } catch (e) {
-      JOptionPane.showMessageDialog(this.mainFrame, (e as Error).message, "Error while loading ", JOptionPane.ERROR_MESSAGE)
+      JOptionPane.showMessageDialog(this.mainFrame, (e as Error).message, "Error while loading ",
+        JOptionPaneMessageType.ERROR_MESSAGE)
     }
   }
 }

@@ -13,7 +13,7 @@ export class OvniFranceArchipelagoAdapter extends AbstractDatabaseAdapter {
   static readonly DESCRIPTION_FIELD_INDEX = 5
   static readonly DATE_FIELD_INDEX = 7
   static readonly HOUR_FIELD_INDEX = 8
-  private static readonly DEFAULT_URL = "https://baseovnifrance.free.fr/"
+  private static readonly DEFAULT_URL = "https://baseovnifrance.free.fr"
   private baseUrl: URL
   private csvDelimiter = "&"
 

@@ -3,7 +3,8 @@ import {JWindow} from "archipelago/api/util/jsdk/swing/JWindow"
 
 export enum JDialogResult {
   APPROVE_OPTION = 0,
-  OK_OPTION = 1
+  OK_OPTION = 1,
+  CANCEL_OPTION,
 }
 
 export class JDialog extends JWindow {

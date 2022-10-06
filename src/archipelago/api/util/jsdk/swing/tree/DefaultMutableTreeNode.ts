@@ -1,15 +1,14 @@
-import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/MutableTreeNode"
-import {TreeNode} from "archipelago/api/util/jsdk/swing/TreeNode"
-import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
+import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/MutableTreeNode"
+import {TreeNode} from "archipelago/api/util/jsdk/swing/tree/TreeNode"
 
 export class DefaultMutableTreeNode<T = any> implements MutableTreeNode<T> {
 
-  protected nodes: TreeNode<T>[] = []
+  protected nodes: TreeNode<any>[] = []
 
   constructor(private userObject: T) {
   }
 
-  add(node: TreeNode<T>) {
+  add<C = any>(node: TreeNode<C>) {
     this.nodes.push(node)
   }
 
@@ -25,7 +24,7 @@ export class DefaultMutableTreeNode<T = any> implements MutableTreeNode<T> {
     return this.userObject
   }
 
-  getPath(): TreePath {
-
+  getPath(): TreeNode<T>[] {
+    return []
   }
 }

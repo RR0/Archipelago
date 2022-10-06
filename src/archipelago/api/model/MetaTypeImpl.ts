@@ -7,9 +7,9 @@ import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
  *
  */
 export class MetaTypeImpl implements MetaType, JSerializable {
-  protected fields = new Set<MetaField>()
+  fields = new Set<MetaField>()
 
-  constructor(protected name: string) {
+  constructor(public name: string) {
   }
 
   setName(name: string): void {

@@ -1,14 +1,14 @@
 import {JComponent} from "archipelago/api/util/jsdk/swing/JComponent"
-import {TreePath} from "archipelago/api/util/jsdk/swing/TreePath"
-import {TreeModel} from "archipelago/api/util/jsdk/swing/TreeModel"
-import {TreeCellRenderer} from "archipelago/api/util/jsdk/swing/TreeCellRenderer"
-import {TreeNode} from "archipelago/api/util/jsdk/swing/TreeNode"
-import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/DefaultTreeCellRenderer"
+import {TreePath} from "archipelago/api/util/jsdk/swing/tree/TreePath"
+import {TreeModel} from "archipelago/api/util/jsdk/swing/tree/TreeModel"
+import {TreeCellRenderer} from "archipelago/api/util/jsdk/swing/tree/TreeCellRenderer"
+import {TreeNode} from "archipelago/api/util/jsdk/swing/tree/TreeNode"
+import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/tree/DefaultTreeCellRenderer"
 
 export class JTree<T = any> extends JComponent {
   private _cellRenderer: TreeCellRenderer = new DefaultTreeCellRenderer()
 
-  constructor(private model: TreeModel<T>) {
+  constructor(private model: TreeModel) {
     super()
   }
 
