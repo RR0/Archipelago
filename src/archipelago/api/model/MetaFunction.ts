@@ -14,7 +14,7 @@ export interface MetaFunction {
 
   setName(name: string): void
 
-  createParameter(): MetaField
+  createParameter(name: string, type: MetaType): MetaField
 
   getReturnType(): MetaType
 

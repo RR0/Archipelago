@@ -1,9 +1,8 @@
+import {Identity} from "archipelago/api/model/Identity"
+import {IllegalArgumentException, MessageFormat} from "ts-jsdk"
+
 /**
  */
-import {Identity} from "archipelago/api/model/Identity"
-import {IllegalArgumentException} from "archipelago/api/util/jsdk/IllegalArgumentException"
-import {MessageFormat} from "archipelago/api/util/jsdk/util/MessageFormat"
-
 export class IdentityImpl implements Identity {
 
   private static readonly emailFormat = new MessageFormat("{0}@{1}.{2}")

@@ -1,9 +1,7 @@
-import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
-import {JLabel} from "archipelago/api/util/jsdk/swing/JLabel"
-import {JTextField} from "archipelago/api/util/jsdk/swing/JTextField"
-import {SpringLayout, SpringLayoutDirection} from "archipelago/api/util/jsdk/swing/SpringLayout"
 import {MetaType} from "archipelago/api/model/MetaType"
+import {JLabel, JPanel, JTextField, SpringLayout} from "ts-jsdk"
+import {SpringLayoutDirection} from "ts-jsdk/dist/awt/SpringLayout"
 
 export class TypePane extends JPanel {
 

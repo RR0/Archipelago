@@ -1,14 +1,9 @@
-import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
-import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
-import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
-import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/DefaultMutableTreeNode"
-import {MetaType} from "archipelago/api/model/MetaType"
-import {MetaField} from "archipelago/api/model/MetaField"
+import {MetaType, TEXT} from "archipelago/api/model/MetaType"
 import {FieldPane} from "archipelago/impl/view/ui/FieldPane"
-import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "archipelago/api/util/jsdk/swing/JOptionPane"
-import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
-import {TreePath} from "archipelago/api/util/jsdk/swing/tree/TreePath"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
+import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "ts-jsdk/dist/swing/JOptionPane"
+import {AbstractAction, ActionEvent, DefaultMutableTreeNode, JFrame, TreePath} from "ts-jsdk"
+import {JDialogResult} from "ts-jsdk/dist/swing/JDialog"
 
 export class AddFieldAction extends AbstractAction {
 
@@ -22,7 +17,7 @@ export class AddFieldAction extends AbstractAction {
     if (lastSelectedComponent instanceof DefaultMutableTreeNode) {
       const metaTypeNode = lastSelectedComponent as DefaultMutableTreeNode
       const metaType = metaTypeNode.getUserObject() as MetaType
-      const metaField = metaType.createField() as MetaField
+      const metaField = metaType.createField("<new field>", TEXT)
 
       const fieldPane = new FieldPane(this.mainFrame.controller, metaField)
       const choosenOption = JOptionPane.showOptionDialog(this.mainFrame, fieldPane,

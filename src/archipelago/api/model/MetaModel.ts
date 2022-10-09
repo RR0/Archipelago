@@ -1,6 +1,6 @@
 import {MetaType} from "archipelago/api/model/MetaType"
 import {MetaFunction} from "archipelago/api/model/MetaFunction"
-import {JSet} from "archipelago/api/util/jsdk/util/JSet"
+import {JSet} from "ts-jsdk"
 
 /**
  *
@@ -17,7 +17,7 @@ export interface MetaModel {
 
   addFunction(metaFunction: MetaFunction): void
 
-  createType(): MetaType
+  createType(name: string): MetaType
 
   createFunction(): MetaFunction
 }

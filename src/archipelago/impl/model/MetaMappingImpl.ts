@@ -2,7 +2,7 @@ import {MetaMapping} from "archipelago/api/model/MetaMapping"
 import {Database} from "archipelago/api/model/Database"
 import {MetaModel} from "archipelago/api/model/MetaModel"
 import {MetaModelImpl} from "archipelago/api/model/MetaModelImpl"
-import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
+import {JSerializable} from "ts-jsdk"
 
 /**
  */

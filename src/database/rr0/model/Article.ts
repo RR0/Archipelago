@@ -1,4 +1,4 @@
-import {Locale} from "archipelago/api/util/jsdk/util/Locale"
+import {Locale} from "ts-jsdk"
 
 export interface Article {
 

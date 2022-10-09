@@ -2,6 +2,7 @@ import {Merger} from "archipelago/api/control/Merger"
 import {MetaDataSource} from "archipelago/api/model/MetaDataSource"
 import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaObjectImpl} from "archipelago/api/model/MetaObjectImpl"
+import {JEntry} from "ts-jsdk/dist/util/JMap"
 
 /**
  * Meta Object Merger implementation.
@@ -19,7 +20,7 @@ export class MergerImpl implements Merger {
     const firstValues = firstObject.getValues()
     const iterator = firstValues.entries()
     while (iterator.hasNext()) {
-      const entry = iterator.next() as Map.Entry
+      const entry = iterator.next() as JEntry
       const fieldName = entry.getKey() as string
       const firstValue = entry.getValue()
       const secondValue = secondObject.get(fieldName)

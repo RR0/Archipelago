@@ -1,7 +1,7 @@
 import {MetaType} from "archipelago/api/model/MetaType"
 import {MetaField} from "archipelago/api/model/MetaField"
 import {MetaFieldImpl} from "archipelago/api/model/MetaFieldImpl"
-import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
+import {JSerializable} from "ts-jsdk"
 
 /**
  *
@@ -20,8 +20,8 @@ export class MetaTypeImpl implements MetaType, JSerializable {
     this.fields.add(metaField)
   }
 
-  createField(): MetaField {
-    return new MetaFieldImpl()
+  createField(name: string, type: MetaType): MetaField {
+    return new MetaFieldImpl(name, type)
   }
 
   getName(): string {

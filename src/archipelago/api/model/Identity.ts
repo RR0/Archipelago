@@ -1,4 +1,4 @@
-import {Principal} from "archipelago/api/util/jsdk/Principal"
+import {Principal} from "ts-jsdk"
 
 /**
  * An Actor may have multiple identities (pseudonyms).

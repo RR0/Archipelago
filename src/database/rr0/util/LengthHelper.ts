@@ -1,8 +1,9 @@
-import {Locale, UK, US} from "archipelago/api/util/jsdk/util/Locale"
-
 /**
  * Utility class to convert lengths.
  */
+import {Locale} from "ts-jsdk"
+import {UK, US} from "ts-jsdk/dist/util/Locale"
+
 export class LengthHelper {
 
   /**

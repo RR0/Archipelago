@@ -2,16 +2,14 @@ import {MetaModel} from "archipelago/api/model/MetaModel"
 import {MetaFunction} from "archipelago/api/model/MetaFunction"
 import {IMAGE, MetaType, NUMBER, TEXT} from "archipelago/api/model/MetaType"
 import {MetaTypeImpl} from "archipelago/api/model/MetaTypeImpl"
-import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
-import {HashSet} from "archipelago/api/util/jsdk/util/HashSet"
-import {JSet} from "archipelago/api/util/jsdk/util/JSet"
 import {MetaFunctionImpl} from "archipelago/api/model/MetaFunctionImpl"
+import {HashSet, JSerializable, JSet} from "ts-jsdk"
 
 /**
  *
  */
 export class MetaModelImpl implements MetaModel, JSerializable {
-  private classes = new HashSet<MetaType>()
+  private classes: JSet<MetaType> = new HashSet<MetaType>()
   private functions = new HashSet<MetaFunction>()
 
   constructor() {
@@ -24,7 +22,7 @@ export class MetaModelImpl implements MetaModel, JSerializable {
     return this.classes
   }
 
-  setClasses(classes: HashSet<MetaType>) {
+  setClasses(classes: JSet<MetaType>) {
     this.classes = classes
   }
 
@@ -48,8 +46,8 @@ export class MetaModelImpl implements MetaModel, JSerializable {
     this.functions = functions
   }
 
-  createType(): MetaType {
-    return new MetaTypeImpl()
+  createType(name: string): MetaType {
+    return new MetaTypeImpl(name)
   }
 
   createFunction(): MetaFunction {
@@ -57,7 +55,7 @@ export class MetaModelImpl implements MetaModel, JSerializable {
   }
 
   getType(typeName: string): MetaType | null {
-    for (let aClass of this.classes._set) {
+    for (let aClass of this.classes) {
       if (aClass.getName() === typeName) {
         return aClass
       }

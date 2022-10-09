@@ -1,11 +1,9 @@
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
 import {MetaFunction} from "archipelago/api/model/MetaFunction"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {JComboBox} from "archipelago/api/util/jsdk/swing/JComboBox"
-import {JTextField} from "archipelago/api/util/jsdk/swing/JTextField"
-import {JLabel} from "archipelago/api/util/jsdk/swing/JLabel"
-import {SpringLayout, SpringLayoutDirection} from "archipelago/api/util/jsdk/swing/SpringLayout"
 import {AbstractPane} from "archipelago/impl/view/ui/AbstractPane"
+import {SpringLayoutDirection} from "ts-jsdk/dist/awt/SpringLayout"
+import {JComboBox, JLabel, JTextField, SpringLayout} from "ts-jsdk"
 
 export class FunctionPane extends AbstractPane {
 

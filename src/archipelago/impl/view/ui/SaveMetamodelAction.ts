@@ -1,8 +1,6 @@
-import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
-import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
-import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
-import {JOptionPane} from "archipelago/api/util/jsdk/swing/JOptionPane"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
+import {AbstractAction, ActionEvent, JFrame} from "ts-jsdk"
+import {JOptionPane} from "ts-jsdk/dist/swing/JOptionPane"
 
 export class SaveMetamodelAction extends AbstractAction {
 

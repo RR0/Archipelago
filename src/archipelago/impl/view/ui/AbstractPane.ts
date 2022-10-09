@@ -1,7 +1,5 @@
-import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
-import {JComboBox} from "archipelago/api/util/jsdk/swing/JComboBox"
-import {DefaultComboBoxModel} from "archipelago/api/util/jsdk/swing/DefaultComboBoxModel"
+import {DefaultComboBoxModel, JComboBox, JPanel} from "ts-jsdk"
 
 /**
  *
@@ -12,7 +10,7 @@ export abstract class AbstractPane extends JPanel {
     const comboBox = new JComboBox(new class extends DefaultComboBoxModel {
       getElementAt(index: number): any {
         let i = 0
-        for (const metaType of controller.getMetaModel().getClasses()._set) {
+        for (const metaType of controller.getMetaModel().getClasses()) {
           if (i == index) {
             return metaType
           }

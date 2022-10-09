@@ -2,8 +2,7 @@ import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaType} from "archipelago/api/model/MetaType"
 import {MetaObjectVisitor} from "archipelago/api/model/MetaObjectVisitor"
 import {MetaDataSource} from "archipelago/api/model/MetaDataSource"
-import {JMap} from "archipelago/api/util/jsdk/util/JMap"
-import {HashMap} from "archipelago/api/util/jsdk/util/HashMap"
+import {HashMap, JMap} from "ts-jsdk"
 
 /**
  * A Meta Object instance.

@@ -7,7 +7,7 @@ import {DatabaseAdapter} from "archipelago/api/model/DatabaseAdapter"
  */
 export interface Database extends MetaDataSource {
 
-  getDataModel(): MetaModel
+  readonly dataModel: MetaModel
 
   isEnabled(): boolean
 

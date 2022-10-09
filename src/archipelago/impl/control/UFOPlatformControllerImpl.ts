@@ -3,75 +3,25 @@ import {Localizer} from "archipelago/api/util/Localizer"
 import {MetaMapping} from "archipelago/api/model/MetaMapping"
 import {MetaMappingImpl} from "archipelago/impl/model/MetaMappingImpl"
 import {MetaType, TEXT} from "archipelago/api/model/MetaType"
-import {Properties} from "archipelago/api/util/jsdk/util/Properties"
 import {Database} from "archipelago/api/model/Database"
 import {DatabaseImpl} from "archipelago/impl/model/DatabaseImpl"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
 import {MetaException} from "archipelago/api/model/MetaException"
 import {MetaModel} from "archipelago/api/model/MetaModel"
-import {HashSet} from "archipelago/api/util/jsdk/util/HashSet"
-import {StringTokenizer} from "archipelago/api/util/jsdk/util/StringTokenizer"
-import {Preferences} from "archipelago/api/util/jsdk/Preferences"
-import {JFile} from "archipelago/api/util/jsdk/util/JFile"
 import {MetaModelImpl} from "archipelago/api/model/MetaModelImpl"
-import {JSet} from "archipelago/api/util/jsdk/util/JSet"
+import {HashSet, JSet, Preferences, Properties, StringTokenizer} from "ts-jsdk"
 
 /**
  *
  */
 export class UFOPlatformControllerImpl implements UFOPlatformController {
-  private adapters = new HashSet<DatabaseAdapter>()
+
   private metaMapping: MetaMapping = new MetaMappingImpl()
-  private preferences = Preferences.userNodeForPackage(this.getClass())
+  private preferences = Preferences.userNodeForPackage(this)
 
-  constructor(protected localizer: Localizer) {
-    this.initAdapters()
+  constructor(protected localizer: Localizer, protected adapters: JSet<DatabaseAdapter>) {
+    this.initAdapters(adapters)
     this.initMetaMapping()
-  }
-
-  static find(tosubclass: Class): JSet<Class> {
-    const classes = new HashSet<Class>()
-    const pcks = Package.getPackages()
-    for (let pck of pcks) {
-      classes.addAll(this.find(pck.getName(), tosubclass))
-    }
-    return classes
-  }
-
-  static find(pckgname: string, toSubClass: Class): JSet<Class> {
-    const classes = new HashSet<Class>()
-    let name = String(pckgname)
-    if (!name.startsWith("/")) {
-      name = "/" + name
-    }
-    name = name.replace(".", "/")
-
-    // Get a File object for the package
-    const url = Launcher.class.getResource(name)
-    if (url != null) {
-      const directory = new JFile(url.getFile())
-      if (directory.exists()) {
-        // Get the list of the files contained in the package
-        const files = directory.list()
-        for (let file of files) {
-          // we are only interested in .class files
-          if (file.endsWith(".class")) {
-            // removes the .class extension
-            const classname = file.substring(0, file.length - 6)
-            try {
-              // Try to create an instance of the object
-              const aClass = Class.forName(pckgname + "." + classname)
-              if (((aClass.getModifiers() & Modifier.ABSTRACT) == 0) && toSubClass.isAssignableFrom(aClass)) {
-                classes.add(aClass)
-              }
-            } catch (cnfex) {
-              console.error(cnfex)
-            }
-          }
-        }
-      }
-    }
-    return classes
   }
 
   getMetaModel(): MetaModel {
@@ -147,12 +97,12 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
     return this.localizer
   }
 
-  getAdapters(): HashSet<DatabaseAdapter> {
+  getAdapters(): JSet<DatabaseAdapter> {
     return this.adapters
   }
 
   close(): void {
-    for (let adapter of this.adapters._set) {
+    for (let adapter of this.adapters) {
       adapter.close()
     }
   }
@@ -173,12 +123,10 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
     this.metaMapping = new MetaMappingImpl()
   }
 
-  private initAdapters(): void {
-    const adapterClasses = UFOPlatformControllerImpl.find(DatabaseAdapter)
+  private initAdapters(adapters: JSet<DatabaseAdapter>): void {
     const properties = new Properties()
-    for (let adapterClass of adapterClasses._set) {
+    for (const adapter of adapters) {
       try {
-        const adapter = adapterClass.newInstance() as DatabaseAdapter
         adapter.setProperties(properties)
         this.adapters.add(adapter)
       } catch (e) {

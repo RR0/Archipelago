@@ -1,7 +1,7 @@
 import {MetaDataSource} from "archipelago/api/model/MetaDataSource"
 import {MetaObjectVisitor} from "archipelago/api/model/MetaObjectVisitor"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {JMap} from "archipelago/api/util/jsdk/util/JMap"
+import {JMap} from "ts-jsdk"
 
 /**
  * An instance of a MetaClass.

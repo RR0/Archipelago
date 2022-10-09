@@ -1,16 +1,15 @@
-import {Properties} from "archipelago/api/util/jsdk/util/Properties"
 import {MetaType, NUMBER, TEXT} from "archipelago/api/model/MetaType"
 import {AbstractDatabaseAdapter} from "archipelago/api/model/AbstractDatabaseAdapter"
 import {MetaTypeImpl} from "archipelago/api/model/MetaTypeImpl"
 import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaException} from "archipelago/api/model/MetaException"
-import {FRANCE, FRENCH, Locale} from "archipelago/api/util/jsdk/util/Locale"
-import {Calendar} from "archipelago/api/util/jsdk/util/Calendar"
-import {GregorianCalendar} from "archipelago/api/util/jsdk/util/GregorianCalendar"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
 import {ArticleImpl} from "database/rr0/model/ArticleImpl"
 import {Source} from "database/rr0/model/Source"
 import {Article} from "database/rr0/model/Article"
+import {Calendar, GregorianCalendar, Locale, Properties} from "ts-jsdk"
+import {FRANCE, FRENCH} from "ts-jsdk/dist/util/Locale"
+import {Parser} from "acorn"
 
 export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
   private static readonly DEFAULT_URL = "http://rr0.org"
@@ -27,40 +26,26 @@ export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
       throw new MetaException("Could not initialize RR0 Adapter because of wrong URL", var12 as Error)
     }
 
-    const dataModel = this.getDataModel()
-    const dateType = dataModel.createType()
-    dateType.setName("Date")
+    const dataModel = this.dataModel
+    const dateType = dataModel.createType("Date")
     dataModel.addMetaType(dateType)
-    const dayOfMonth = dateType.createField()
-    dayOfMonth.setType(NUMBER)
-    dayOfMonth.setName("month")
+    const dayOfMonth = dateType.createField("dayOfMonth", NUMBER)
     dateType.addField(dayOfMonth)
-    const month = dateType.createField()
-    month.setType(TEXT)
-    month.setName("month")
+    const month = dateType.createField("month", TEXT)
     dateType.addField(month)
-    const year = dateType.createField()
-    year.setType(NUMBER)
-    year.setName("year")
+    const year = dateType.createField("year", NUMBER)
     dateType.addField(year)
-    const caseType = dataModel.createType()
-    caseType.setName("Case")
+    const caseType = dataModel.createType("Case")
     dataModel.addMetaType(caseType)
-    const dateField = caseType.createField()
-    dateField.setName("date")
-    dateField.setType(dateType)
+    const dateField = caseType.createField("date", dateType)
     caseType.addField(dateField)
-    const descriptionField = caseType.createField()
-    descriptionField.setName("description")
-    descriptionField.setType(TEXT)
+    const descriptionField = caseType.createField("description", TEXT)
     caseType.addField(descriptionField)
-    const sourceField = caseType.createField()
-    sourceField.setName("source")
-    sourceField.setType(TEXT)
+    const sourceField = caseType.createField("source", TEXT)
     caseType.addField(sourceField)
   }
 
-  public getName(): string {
+  getName(): string {
     return "R.R.0 adapter"
   }
 
@@ -165,9 +150,6 @@ export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
         this.append(node, text, sighting)
       }
     }
-  }
-
-  close(): void {
   }
 
   private getCalendar(moment: any): Calendar {

@@ -1,8 +1,9 @@
-import {Locale, UK, US} from "archipelago/api/util/jsdk/util/Locale"
-
 /**
  * Utility class to convert weight values.
  */
+import {Locale} from "ts-jsdk"
+import {UK, US} from "ts-jsdk/dist/util/Locale"
+
 export class WeightHelper {
   /**
    * The weight of a Pound, in kilograms.

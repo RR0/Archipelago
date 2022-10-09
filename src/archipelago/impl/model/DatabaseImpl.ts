@@ -7,15 +7,12 @@ import {MetaModel} from "archipelago/api/model/MetaModel"
  */
 export class DatabaseImpl implements Database {
 
-  constructor(protected name: string, protected adapter: DatabaseAdapter, protected enabled = true) {
+  constructor(protected name: string, protected adapter: DatabaseAdapter, protected enabled = true,
+              readonly dataModel: MetaModel) {
   }
 
   getName(): string {
     return this.name
-  }
-
-  getDataModel(): MetaModel {
-    return this.adapter.getDataModel()
   }
 
   isEnabled(): boolean {

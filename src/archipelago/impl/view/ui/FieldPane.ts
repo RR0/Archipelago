@@ -1,11 +1,9 @@
 import {AbstractPane} from "archipelago/impl/view/ui/AbstractPane"
-import {SpringLayout, SpringLayoutDirection} from "archipelago/api/util/jsdk/swing/SpringLayout"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
 import {MetaField} from "archipelago/api/model/MetaField"
-import {JLabel} from "archipelago/api/util/jsdk/swing/JLabel"
-import {JTextField} from "archipelago/api/util/jsdk/swing/JTextField"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {JComboBox} from "archipelago/api/util/jsdk/swing/JComboBox"
+import {SpringLayoutDirection} from "ts-jsdk/dist/awt/SpringLayout"
+import {JComboBox, JLabel, JTextField, SpringLayout} from "ts-jsdk"
 
 export class FieldPane extends AbstractPane {
 

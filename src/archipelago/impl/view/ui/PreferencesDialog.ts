@@ -1,7 +1,6 @@
-import {JDialog} from "archipelago/api/util/jsdk/swing/JDialog"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
-import {JCheckBox} from "archipelago/api/util/jsdk/swing/JCheckBox"
+import {JCheckBox, JDialog} from "ts-jsdk"
 
 export class PreferencesDialog extends JDialog {
   /* private buttonOK: JButton

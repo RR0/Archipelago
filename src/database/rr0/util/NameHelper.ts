@@ -1,8 +1,8 @@
+import {StringTokenizer} from "ts-jsdk"
+
 /**
  * Utility class to format names.
  */
-import {StringTokenizer} from "archipelago/api/util/jsdk/util/StringTokenizer"
-
 export class NameHelper {
   /**
    * @param name A name.

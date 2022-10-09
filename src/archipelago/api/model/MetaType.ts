@@ -20,7 +20,7 @@ export interface MetaType {
    */
   addField(metaField: MetaField): void
 
-  createField(): MetaField
+  createField(name: string, type: MetaType): MetaField
 }
 
 const EMPTY_SET = new Set<MetaField>()

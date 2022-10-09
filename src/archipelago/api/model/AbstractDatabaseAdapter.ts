@@ -1,8 +1,9 @@
 import {DatabaseAdapter} from "archipelago/api/model/DatabaseAdapter"
-import {Properties} from "archipelago/api/util/jsdk/util/Properties"
 import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaObjectImpl} from "archipelago/api/model/MetaObjectImpl"
 import {MetaModel} from "archipelago/api/model/MetaModel"
+import {MetaModelImpl} from "archipelago/api/model/MetaModelImpl"
+import {Properties} from "ts-jsdk"
 
 /**
  *
@@ -11,11 +12,13 @@ export abstract class AbstractDatabaseAdapter implements DatabaseAdapter {
 
   private properties: Properties = new Properties()
 
+  constructor(readonly dataModel: MetaModel = new MetaModelImpl()) {
+  }
+
   abstract getName(): string
 
-  abstract close(): void
-
-  abstract getDataModel(): MetaModel
+  close(): void {
+  }
 
   getProperties(): Properties {
     return this.properties
@@ -31,7 +34,7 @@ export abstract class AbstractDatabaseAdapter implements DatabaseAdapter {
   }
 
   visit(original: MetaObject): MetaObject {
-    const readObject: MetaObject = new MetaObjectImpl(original.getType())
+    const readObject = new MetaObjectImpl(original.getType())
     readObject.setValues(original.getValues(), this)
     this.read(readObject)
     return readObject

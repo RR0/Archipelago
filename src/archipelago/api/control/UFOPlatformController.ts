@@ -3,8 +3,7 @@ import {MetaModel} from "archipelago/api/model/MetaModel"
 import {DatabaseAdapter} from "archipelago/api/model/DatabaseAdapter"
 import {Localizer} from "archipelago/api/util/Localizer"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {HashSet} from "archipelago/api/util/jsdk/util/HashSet"
-import {JSet} from "archipelago/api/util/jsdk/util/JSet"
+import {JSet} from "ts-jsdk"
 
 /**
  *
@@ -13,7 +12,7 @@ export interface UFOPlatformController {
 
   getLocalizer(): Localizer
 
-  getAdapters(): HashSet<DatabaseAdapter>
+  getAdapters(): JSet<DatabaseAdapter>
 
   close(): void
 

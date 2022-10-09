@@ -1,6 +1,6 @@
 import {MetaField} from "archipelago/api/model/MetaField"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {JSerializable} from "archipelago/api/util/jsdk/util/JSerializable"
+import {JSerializable} from "ts-jsdk"
 
 /**
  *

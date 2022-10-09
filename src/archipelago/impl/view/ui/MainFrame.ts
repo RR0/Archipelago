@@ -1,39 +1,12 @@
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
-import {ResourceBundle} from "archipelago/api/util/jsdk/util/ResourceBundle"
 import {MetaType} from "archipelago/api/model/MetaType"
-import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
-import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
 import {MetaField} from "archipelago/api/model/MetaField"
-import {Action} from "archipelago/api/util/jsdk/swing/Action"
-import {Font} from "archipelago/api/util/jsdk/swing/Font"
-import {JPopupMenu} from "archipelago/api/util/jsdk/swing/JPopupMenu"
-import {JMenuItem} from "archipelago/api/util/jsdk/swing/JMenuItem"
-import {JSeparator} from "archipelago/api/util/jsdk/swing/JSeparator"
-import {MouseAdapter} from "archipelago/api/util/jsdk/swing/MouseAdapter"
 import {TypePane} from "archipelago/impl/view/ui/TypePane"
 import {FieldPane} from "archipelago/impl/view/ui/FieldPane"
-import {BorderLayout} from "archipelago/api/util/jsdk/swing/BorderLayout"
-import {JComponent} from "archipelago/api/util/jsdk/swing/JComponent"
-import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
 import {MetaModel} from "archipelago/api/model/MetaModel"
-import {JMenu} from "archipelago/api/util/jsdk/swing/JMenu"
-import {JButton} from "archipelago/api/util/jsdk/swing/JButton"
-import {JTree} from "archipelago/api/util/jsdk/swing/tree/JTree"
-import {DefaultTreeModel} from "archipelago/api/util/jsdk/swing/tree/DefaultTreeModel"
-import {DefaultMutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/DefaultMutableTreeNode"
-import {JMouseEvent} from "archipelago/api/util/jsdk/swing/JMouseEvent"
 import {MetaTypeImpl} from "archipelago/api/model/MetaTypeImpl"
-import {FocusAdapter} from "archipelago/api/util/jsdk/swing/FocusAdapter"
 import {MetaFieldImpl} from "archipelago/api/model/MetaFieldImpl"
 import {MetaFunctionImpl} from "archipelago/api/model/MetaFunctionImpl"
-import {MutableTreeNode} from "archipelago/api/util/jsdk/swing/tree/MutableTreeNode"
-import {JMenuBar} from "archipelago/api/util/jsdk/swing/JMenuBar"
-import {JTabbedPane} from "archipelago/api/util/jsdk/swing/JTabbedPane"
-import {JSplitPane, JSplitPaneDirection} from "archipelago/api/util/jsdk/swing/JSplitPane"
-import {DefaultTreeCellRenderer} from "archipelago/api/util/jsdk/swing/tree/DefaultTreeCellRenderer"
-import {Color} from "archipelago/api/util/jsdk/swing/Color"
-import {Dimension} from "archipelago/api/util/jsdk/swing/Dimension"
-import {JWindowEvent} from "archipelago/api/util/jsdk/swing/JWindow"
 import {SaveMetamodelAction} from "archipelago/impl/view/ui/SaveMetamodelAction"
 import {AddFieldAction} from "archipelago/impl/view/ui/AddFieldAction"
 import {AddFunctionAction} from "archipelago/impl/view/ui/AddFunctionAction"
@@ -44,6 +17,36 @@ import {SaveMetamodelAsAction} from "archipelago/impl/view/ui/SaveMetamodelAsAct
 import {OpenMetamodelAction} from "archipelago/impl/view/ui/OpenMetamodelAction"
 import {AddDatasourceAction} from "archipelago/impl/view/ui/AddDatasourceAction"
 import {AboutAction} from "archipelago/impl/view/ui/AboutAction"
+import {
+  Action,
+  ActionEvent,
+  BorderLayout,
+  Color,
+  DefaultMutableTreeNode,
+  DefaultTreeCellRenderer,
+  DefaultTreeModel,
+  Dimension,
+  FocusAdapter,
+  Font,
+  JButton,
+  JComponent,
+  JFrame,
+  JMenu,
+  JMenuBar,
+  JMenuItem,
+  JMouseEvent,
+  JPanel,
+  JPopupMenu,
+  JSeparator,
+  JSplitPane,
+  JTabbedPane,
+  JTree,
+  MouseAdapter,
+  MutableTreeNode,
+  ResourceBundle
+} from "ts-jsdk"
+import {JSplitPaneDirection} from "ts-jsdk/dist/swing/JSplitPane"
+import {JWindowEvent} from "ts-jsdk/dist/awt/JWindow"
 
 /**
  *
@@ -169,7 +172,7 @@ export class MainFrame extends JFrame {
             const databaseMappingPanel = new JPanel()
             mappingPanel.addTab(datasource.getName(), null, databaseMappingPanel, datasource.getName())
 
-            const dataModel = datasource.getDataModel()
+            const dataModel = datasource.dataModel
             const rootNode = new DefaultMutableTreeNode(MainFrame.resourceBundle.getString("DataModel"))
             const metaModelTreeModel = new DefaultTreeModel(rootNode)
             const modelTree = new JTree(metaModelTreeModel)
@@ -274,16 +277,16 @@ export class MainFrame extends JFrame {
 
   private loadTree(model: MetaModel, treeModel: DefaultTreeModel): void {
     const metaTypes = model.getClasses()
-    for (const metaType of metaTypes._set) {
+    for (const metaType of metaTypes) {
       const metaTypeNode = new DefaultMutableTreeNode(metaType)
-      (treeModel.getRoot() as DefaultMutableTreeNode).add(metaTypeNode)
+      (treeModel.getRoot() as MutableTreeNode).add(metaTypeNode)
       for (const metaField of metaType.getFields()) {
         const metaFieldNode = new DefaultMutableTreeNode(metaField)
         metaTypeNode.add(metaFieldNode)
       }
     }
     const functions = model.getFunctions()
-    for (const metaFunction of functions._set) {
+    for (const metaFunction of functions) {
       const functionNode = new DefaultMutableTreeNode(metaFunction);
       (treeModel.getRoot() as DefaultMutableTreeNode).add(functionNode)
       for (const parameter of metaFunction.getParameters()) {
@@ -350,7 +353,7 @@ export class MainFrame extends JFrame {
     const recentFilesSubMenu = new JMenu(MainFrame.resourceBundle.getString("RecentFiles"))
     const recentFiles = this.controller.getRecentFiles()
     if (!recentFiles.isEmpty()) {
-      for (const recentFile of recentFiles._set) {
+      for (const recentFile of recentFiles) {
         const editMappingItem = new JMenuItem(recentFile as string)
         recentFilesSubMenu.add(editMappingItem)
 //                recentFilesSubMenu.setEnabled(true);

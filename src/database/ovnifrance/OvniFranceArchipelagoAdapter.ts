@@ -1,11 +1,10 @@
 import {AbstractDatabaseAdapter} from "archipelago/api/model/AbstractDatabaseAdapter"
-import {Properties} from "archipelago/api/util/jsdk/util/Properties"
 import {MetaObject} from "archipelago/api/model/MetaObject"
-import {GregorianCalendar} from "archipelago/api/util/jsdk/util/GregorianCalendar"
-import {Calendar} from "archipelago/api/util/jsdk/util/Calendar"
-import {FRANCE, FRENCH} from "archipelago/api/util/jsdk/util/Locale"
 import {MetaException} from "archipelago/api/model/MetaException"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
+import {Calendar, GregorianCalendar, Properties} from "ts-jsdk"
+import {FRANCE, FRENCH} from "ts-jsdk/dist/util/Locale"
+import {Parser} from "acorn"
 
 
 export class OvniFranceArchipelagoAdapter extends AbstractDatabaseAdapter {
@@ -17,9 +16,6 @@ export class OvniFranceArchipelagoAdapter extends AbstractDatabaseAdapter {
   private baseUrl: URL
   private csvDelimiter = "&"
 
-  public OVNIFranceDatabaseAdapter() {
-  }
-
   init(setupProperties: Properties): void {
     let spec = setupProperties.getProperty("archipelago:ovnifrance:url")
     if (spec == null) {
@@ -28,7 +24,7 @@ export class OvniFranceArchipelagoAdapter extends AbstractDatabaseAdapter {
     try {
       this.baseUrl = new URL(spec)
     } catch (err) {
-      throw new MetaException("Could not initialize OVNI France Adapter because of wrong URL", err)
+      throw new MetaException("Could not initialize OVNI France Adapter because of wrong URL", err as Error)
     }
   }
 
@@ -79,11 +75,8 @@ export class OvniFranceArchipelagoAdapter extends AbstractDatabaseAdapter {
         }
       }
     } catch (err) {
-      throw new MetaException(err)
+      throw new MetaException(err as Error)
     }
-  }
-
-  close(): void {
   }
 
   private getCalendar(moment: any): Calendar {

@@ -1,8 +1,6 @@
-import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
 import {PreferencesDialog} from "archipelago/impl/view/ui/PreferencesDialog"
-import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
-import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
+import {AbstractAction, ActionEvent, JFrame} from "ts-jsdk"
 
 export class PreferencesAction extends AbstractAction {
   protected newDatasourceDialog: PreferencesDialog

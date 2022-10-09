@@ -1,10 +1,8 @@
-import {AbstractAction} from "archipelago/api/util/jsdk/swing/AbstractAction"
-import {JFrame} from "archipelago/api/util/jsdk/swing/JFrame"
-import {ActionEvent} from "archipelago/api/util/jsdk/awt/ActionEvent"
 import {DatasourcePane} from "archipelago/impl/view/ui/DatasourcePane"
-import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "archipelago/api/util/jsdk/swing/JOptionPane"
-import {JDialogResult} from "archipelago/api/util/jsdk/swing/JDialog"
 import {MainFrame} from "archipelago/impl/view/ui/MainFrame"
+import {JOptionPane, JOptionPaneMessageType, JOptionPaneOptionType} from "ts-jsdk/dist/swing/JOptionPane"
+import {AbstractAction, ActionEvent, JFrame} from "ts-jsdk"
+import {JDialogResult} from "ts-jsdk/dist/swing/JDialog"
 
 export class AddDatasourceAction extends AbstractAction {
 

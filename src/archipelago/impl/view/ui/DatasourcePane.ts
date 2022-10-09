@@ -1,11 +1,7 @@
-import {JPanel} from "archipelago/api/util/jsdk/swing/JPanel"
-import {JTextField} from "archipelago/api/util/jsdk/swing/JTextField"
 import {Database} from "archipelago/api/model/Database"
-import {JComboBox} from "archipelago/api/util/jsdk/swing/JComboBox"
 import {UFOPlatformController} from "archipelago/api/control/UFOPlatformController"
-import {JLabel} from "archipelago/api/util/jsdk/swing/JLabel"
-import {DefaultComboBoxModel} from "archipelago/api/util/jsdk/swing/DefaultComboBoxModel"
-import {SpringLayout, SpringLayoutDirection} from "archipelago/api/util/jsdk/swing/SpringLayout"
+import {DefaultComboBoxModel, JComboBox, JLabel, JPanel, JTextField, SpringLayout} from "ts-jsdk"
+import {SpringLayoutDirection} from "ts-jsdk/dist/awt/SpringLayout"
 
 export class DatasourcePane extends JPanel {
   private nameTextfield: JTextField
@@ -41,7 +37,7 @@ export class DatasourcePane extends JPanel {
 
   ok(): void {
     const selectedItem = this.adaptersCombo.getSelectedItem()
-    for (const adapter of this.controller.getAdapters()._set) {
+    for (const adapter of this.controller.getAdapters()) {
       if (selectedItem.equals(adapter.getName())) {
         this.datasource.setAdapter(adapter)
         break
@@ -53,7 +49,7 @@ export class DatasourcePane extends JPanel {
   private createAdaptersCombo(controller: UFOPlatformController): JComboBox {
     const adaptersCombo = new JComboBox()
     const adapters: string[] = []
-    for (const adapter of controller.getAdapters()._set) {
+    for (const adapter of controller.getAdapters()) {
       adapters.push(adapter.getName())
     }
     adaptersCombo.setModel(new class extends DefaultComboBoxModel {
