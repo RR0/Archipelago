@@ -1,9 +1,9 @@
-/**
- * Utility class to convert lengths.
- */
 import {Locale} from "ts-jsdk"
 import {UK, US} from "ts-jsdk/dist/util/Locale"
 
+/**
+ * Utility class to convert lengths.
+ */
 export class LengthHelper {
 
   /**

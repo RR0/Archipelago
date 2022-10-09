@@ -10,9 +10,9 @@ import {JSet} from "ts-jsdk"
  */
 export interface UFOPlatformController {
 
-  getLocalizer(): Localizer
+  readonly localizer: Localizer
 
-  getAdapters(): JSet<DatabaseAdapter>
+  adapters: DatabaseAdapter[]
 
   close(): void
 
@@ -28,7 +28,7 @@ export interface UFOPlatformController {
 
   getDefaultFieldType(): MetaType
 
-  getDefaultAdapter(): DatabaseAdapter
+  getDefaultAdapter(): DatabaseAdapter | undefined
 
   addDatasource(database: Database): void
 

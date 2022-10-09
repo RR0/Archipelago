@@ -5,7 +5,7 @@ import {MetaObject} from "archipelago/api/model/MetaObject"
 import {MetaException} from "archipelago/api/model/MetaException"
 import {MetaObjectNotFoundException} from "archipelago/api/model/MetaObjectNotFoundException"
 import {ArticleImpl} from "database/rr0/model/ArticleImpl"
-import {Source} from "database/rr0/model/Source"
+import {Source} from "database/rr0/model/report/Source"
 import {Article} from "database/rr0/model/Article"
 import {Calendar, GregorianCalendar, Locale, Properties} from "ts-jsdk"
 import {FRANCE, FRENCH} from "ts-jsdk/dist/util/Locale"
@@ -107,7 +107,6 @@ export class RR0ArchipelagoAdapter extends AbstractDatabaseAdapter {
           if (subNode.equals(node)) {
             parentNodeIterator.nextNode()
             const text = ""
-
             do {
               const descnode = parentNodeIterator.nextNode()
               this.append(descnode, text, sighting)

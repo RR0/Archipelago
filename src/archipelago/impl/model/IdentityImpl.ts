@@ -1,7 +1,8 @@
-import {Identity} from "archipelago/api/model/Identity"
+import {Identity} from "../../api/model/Identity"
 import {IllegalArgumentException, MessageFormat} from "ts-jsdk"
 
 /**
+ *
  */
 export class IdentityImpl implements Identity {
 

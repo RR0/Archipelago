@@ -19,7 +19,7 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
   private metaMapping: MetaMapping = new MetaMappingImpl()
   private preferences = Preferences.userNodeForPackage(this)
 
-  constructor(protected localizer: Localizer, protected adapters: JSet<DatabaseAdapter>) {
+  constructor(readonly localizer: Localizer, readonly adapters: DatabaseAdapter[]) {
     this.initAdapters(adapters)
     this.initMetaMapping()
   }
@@ -89,16 +89,8 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
     return TEXT
   }
 
-  getDefaultAdapter(): DatabaseAdapter {
-    return this.adapters.isEmpty() ? null : this.adapters.values().next()
-  }
-
-  getLocalizer(): Localizer {
-    return this.localizer
-  }
-
-  getAdapters(): JSet<DatabaseAdapter> {
-    return this.adapters
+  getDefaultAdapter(): DatabaseAdapter | undefined {
+    return this.adapters.length > 0 ? this.adapters[0] : undefined
   }
 
   close(): void {
@@ -123,12 +115,12 @@ export class UFOPlatformControllerImpl implements UFOPlatformController {
     this.metaMapping = new MetaMappingImpl()
   }
 
-  private initAdapters(adapters: JSet<DatabaseAdapter>): void {
+  private initAdapters(adapters: DatabaseAdapter[]): void {
     const properties = new Properties()
     for (const adapter of adapters) {
       try {
         adapter.setProperties(properties)
-        this.adapters.add(adapter)
+        this.adapters.push(adapter)
       } catch (e) {
         console.error(e)
       }
